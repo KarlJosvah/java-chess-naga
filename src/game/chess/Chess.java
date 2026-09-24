@@ -7,22 +7,39 @@ import java.awt.Graphics2D;
 import game.chess.entity.Board;
 import game.chess.entity.Piece;
 import game.chess.helpers.ChessBuilder;
+import game.chess.helpers.BoardBuilder;
 
 import engine.Main;
 
 public class Chess {
 
-// ======================================================================================================================================================
+	public enum Type {
+		CLASSIC,
+		REVERSED,
+		RANDOM,
+		GIANT,
+		FOUR_PLAYER,
+		CUSTOM;
+	}
 
-	private Board board = new Board();
-	private ArrayList<Piece> pieces = null;
+// ======================================================================================================================================================
 	
 	public static final int WIDTH = Main.WIDTH;
 	public static final int HEIGHT = Main.HEIGHT;
 
+	private Board board = null;
+	private ArrayList<Piece> pieces = null;
+	private Chess.Type type = Chess.Type.CLASSIC;
+
 // ======================================================================================================================================================
 
 	public Chess() {
+		this(Chess.Type.CLASSIC);
+	}
+
+	public Chess(Type type) {
+		this.type = type;
+		this.board = BoardBuilder.of(type);
 	}
 
 // ======================================================================================================================================================
