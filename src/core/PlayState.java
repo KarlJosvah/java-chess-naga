@@ -36,7 +36,7 @@ public class PlayState extends GameState {
 
 	@Override
 	public void init() {
-		this.chess = new Chess(Chess.Type.CLASSIC);
+		this.chess = new Chess(Chess.Type.FOUR_PLAYER);
 		this.chess.init();
 	}
 
