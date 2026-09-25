@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Graphics2D;
 
-import game.chess.helpers.BoardBuilder;
+import game.chess.builder.BoardBuilder;
 import game.chess.Chess;
 
 public class Board {
@@ -17,10 +17,15 @@ public class Board {
 	private Tile[][] tiles = null;
 	private Rectangle rect = null;
 	private ArrayList<Point> disableMap = new ArrayList<Point>();
+	private double tileSize = 0;
 
 // ======================================================================================================================================================
 
 	public Board() {
+	}
+
+	public void disable(int x, int y) {
+		this.disableMap.add(new Point(x, y));
 	}
 
 // ======================================================================================================================================================
@@ -28,22 +33,35 @@ public class Board {
 	public void setMargin(int margin) {
 		this.margin = margin;
 	}
+
 	public void setRowCount(int rowCount) {
 		this.rowCount = rowCount;
 	}
+	
 	public void setColCount(int colCount) {
 		this.colCount = colCount;
 	}
-	public void disable(int x, int y) {
-		this.disableMap.add(new Point(x, y));
+
+// ======================================================================================================================================================
+
+	public int getRowCount() {
+		return this.rowCount;
+	}
+
+	public int getColCount() {
+		return this.colCount;
+	}
+
+	public double getTileSize() {
+		return this.tileSize;
 	}
 
 // ======================================================================================================================================================
 
 	public void init() {
 		this.rect = BoardBuilder.boardRect(this.rowCount, this.colCount, this.margin);
-		Tile.TILE_SIZE(this.rect.getWidth() / this.colCount);
-		this.tiles = BoardBuilder.buildTiles(this.rowCount, this.colCount, this.rect);
+		this.tileSize = this.rect.getWidth() / this.colCount;
+		this.tiles = BoardBuilder.buildTiles(this.rowCount, this.colCount, this.rect, this.tileSize);
 		BoardBuilder.disable(this.tiles, this.disableMap);
 	}
 
@@ -64,4 +82,8 @@ public class Board {
 	}
 
 // ======================================================================================================================================================
+
+	public void place(Piece piece, int row, int col) {
+		this.tiles[row][col].place(piece);
+	}
 }

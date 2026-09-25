@@ -6,8 +6,11 @@ import java.awt.Graphics2D;
 
 import game.chess.entity.Board;
 import game.chess.entity.Piece;
-import game.chess.helpers.ChessBuilder;
-import game.chess.helpers.BoardBuilder;
+import game.chess.builder.BoardBuilder;
+import game.chess.builder.ChessBuilder;
+import game.chess.builder.LayoutBuilder;
+
+import game.chess.layout.Layout;
 
 import engine.Main;
 
@@ -28,7 +31,8 @@ public class Chess {
 	public static final int HEIGHT = Main.HEIGHT;
 
 	private Board board = null;
-	private ArrayList<Piece> pieces = null;
+	private Layout layout = null;
+	private final ArrayList<Piece> pieces = new ArrayList<Piece>();
 	private Chess.Type type = Chess.Type.CLASSIC;
 
 // ======================================================================================================================================================
@@ -39,16 +43,15 @@ public class Chess {
 
 	public Chess(Type type) {
 		this.type = type;
-		this.board = BoardBuilder.of(type);
+		this.board = BoardBuilder.of(this.type);
 	}
 
 // ======================================================================================================================================================
 
 	public void init() {
 		this.board.init();
-
-		this.pieces = ChessBuilder.buildPieces();
-		ChessBuilder.placePieces(this.pieces);
+		this.layout = LayoutBuilder.of(this.type);
+		ChessBuilder.placePieces(this.board, this.layout, this.pieces);
 	}
 
 	public void tick(double elapsedSecond, long loopID) {

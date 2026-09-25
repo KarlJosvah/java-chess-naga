@@ -18,23 +18,20 @@ public class Tile {
 		Helper.getColorFromHex("#779556")
 	};
 
-	public static double TILE_SIZE = 0;
-
-	public static void TILE_SIZE(double size) {
-		Tile.TILE_SIZE = size;
-	}
-
 	private double x = 0;
 	private double y = 0;
 	private int row = 0;
 	private int col = 0;
+	private double size = 0;
 	private Tile.Type type = Tile.Type.NORMAL;
+	private Piece piece = null;
 
 // ======================================================================================================================================================
 
-	public Tile(int row, int col) {
+	public Tile(int row, int col, double size) {
 		this.row = row;
 		this.col = col;
+		this.size = size;
 	}
 
 // ======================================================================================================================================================
@@ -66,8 +63,8 @@ public class Tile {
 		g.fillRect(
 			(int) this.x,
 			(int) this.y,
-			(int) Tile.TILE_SIZE,
-			(int) Tile.TILE_SIZE
+			(int) this.size,
+			(int) this.size
 		);
 	}
 
@@ -83,5 +80,13 @@ public class Tile {
 
 	public void disable() {
 		this.type = Tile.Type.DISABLED;
+	}
+
+	public void place(Piece piece) {
+		if (this.type == Tile.Type.DISABLED) {
+			throw new IllegalStateException("Cannot place a piece on a disabled tile");
+		}
+		this.piece = piece;
+		this.piece.setPos(this.x, this.y);
 	}
 }

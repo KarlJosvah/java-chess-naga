@@ -1,4 +1,4 @@
-package game.chess.helpers;
+package game.chess.builder;
 
 import java.util.ArrayList;
 
@@ -102,7 +102,7 @@ public class BoardBuilder {
 		return new Rectangle(x, y, w, h);
 	}
 
-	public static Tile[][] buildTiles(int rowCount, int colCount, Rectangle rect) {
+	public static Tile[][] buildTiles(int rowCount, int colCount, Rectangle rect, double tileSize) {
 		Tile[][] tiles = new Tile[rowCount][colCount];
 
 		double startX = rect.getX();
@@ -110,8 +110,13 @@ public class BoardBuilder {
 
 		for(int row = 0; row < rowCount; row++) {
 			for(int col = 0; col < colCount; col++) {
-				tiles[row][col] = new Tile(row, col);
-				tiles[row][col].setPos(startX + (col * Tile.TILE_SIZE), startY + (row * Tile.TILE_SIZE));
+				tiles[row][col] = new Tile(row, col, tileSize);
+				
+				// Calculate Y position so row 0 is at the bottom and rowCount - 1 is at the top
+				double posX = startX + (col * tileSize);
+				double posY = startY + ((rowCount - 1 - row) * tileSize);
+				
+				tiles[row][col].setPos(posX, posY);
 			}
 		}
 
