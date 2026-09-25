@@ -11,6 +11,17 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
 
 public class SVGLoader {
+	public static final String BOARD_SVG_PATH = "assets/board/";
+	public static final String PIECE_SVG_PATH = "assets/pieces/";
+
+	public static BufferedImage loadBoardSvg(String fileName, float width, float height) {
+		return SVGLoader.loadSvg(SVGLoader.BOARD_SVG_PATH + fileName, width, height);
+	}
+
+	public static BufferedImage loadPieceSvg(String fileName, float width, float height) {
+		return SVGLoader.loadSvg(SVGLoader.PIECE_SVG_PATH + fileName, width, height);
+	}
+
 	public static BufferedImage loadSvg(String filePath, float width, float height) {
 		BufferedImage[] imageHolder = new BufferedImage[1];
 
