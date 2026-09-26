@@ -3,6 +3,7 @@ import engine.GameLoop;
 import engine.gamestate.GameStateHandler;
 
 import core.PlayState;
+import game.chess.config.Config;
 
 public class App {
 
@@ -12,6 +13,7 @@ public class App {
 		Main.VSYNC(false);
 		GameLoop.setTargetFPS(60);
 		GameStateHandler.setDefaultStateID(PlayState.ID);
+		Config.set(Config.defaultConfig());
 	}
 
 // ======================================================================================================================================================

@@ -29,7 +29,7 @@ public class Drawer {
 
 		FontMetrics metrics = g.getFontMetrics();
 		int textWidth = metrics.stringWidth(text);
-		int textHeight = metrics.getAscent() - metrics.getDescent();
+		int textHeight = metrics.getHeight();
 
 		int x = rect.x;
 		int y = rect.y;
