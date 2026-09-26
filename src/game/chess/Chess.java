@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import java.awt.Graphics2D;
 
+import game.chess.entity.Tile;
 import game.chess.entity.Board;
 import game.chess.entity.Piece;
 import game.chess.layout.Layout;
@@ -65,5 +66,15 @@ public class Chess {
 		for (Piece piece: this.pieces) {
 			piece.render(g);
 		}
+	}
+
+// ======================================================================================================================================================
+
+	public void handleLeftClick(int x, int y) {
+		Tile clickedTiles = this.board.getTileAtPixel(x, y);
+		System.out.println(clickedTiles);
+	}
+
+	public void handleRightClick(int x, int y) {
 	}
 }

@@ -66,4 +66,8 @@ public class Piece {
 	public void setSprite(BufferedImage sprite) {
 		this.sprite = sprite;
 	}
+
+	public String toString() {
+		return "" + this.type.name() + " " + this.color.name();
+	}
 }

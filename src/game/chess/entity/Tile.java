@@ -151,4 +151,14 @@ public class Tile {
 		this.piece = piece;
 		this.piece.setPos(this.x, this.y);
 	}
+
+// ======================================================================================================================================================
+
+	public String toString() {
+		String str = "" + this.file + this.rank;
+		if (this.piece != null) {
+			str += " - " + this.piece;
+		}
+		return str;
+	}
 }
