@@ -54,29 +54,29 @@ public class BoardBuilder {
 		board.setMargin(margin);
 
 		// Disable TOP-LEFT
-		for(int row = 0; row < crease; row++) {
-			for(int col = 0; col < crease; col++) {
+		for (int row = 0; row < crease; row++) {
+			for (int col = 0; col < crease; col++) {
 				board.disable(row, col);
 			}
 		}
 
 		// Disable TOP-RIGHT
-		for(int row = 0; row < crease; row++) {
-			for(int col = colCount - 1; col >= colCount - crease; col--) {
+		for (int row = 0; row < crease; row++) {
+			for (int col = colCount - 1; col >= colCount - crease; col--) {
 				board.disable(row, col);
 			}
 		}
 
 		// Disable BOTTOM-LEFT
-		for(int row = rowCount - 1; row >= rowCount - crease; row--) {
-			for(int col = 0; col < crease; col++) {
+		for (int row = rowCount - 1; row >= rowCount - crease; row--) {
+			for (int col = 0; col < crease; col++) {
 				board.disable(row, col);
 			}
 		}
 
 		// Disable BOTTOM-RIGHT
-		for(int row = rowCount - 1; row >= rowCount - crease; row--) {
-			for(int col = colCount - 1; col >= colCount - crease; col--) {
+		for (int row = rowCount - 1; row >= rowCount - crease; row--) {
+			for (int col = colCount - 1; col >= colCount - crease; col--) {
 				board.disable(row, col);
 			}
 		}
@@ -108,8 +108,8 @@ public class BoardBuilder {
 		double startX = rect.getX();
 		double startY = rect.getY();
 
-		for(int row = 0; row < rowCount; row++) {
-			for(int col = 0; col < colCount; col++) {
+		for (int row = 0; row < rowCount; row++) {
+			for (int col = 0; col < colCount; col++) {
 				tiles[row][col] = new Tile(row, col, tileSize);
 				
 				// Calculate Y position so row 0 is at the bottom and rowCount - 1 is at the top
@@ -127,7 +127,7 @@ public class BoardBuilder {
 // ======================================================================================================================================================
 
 	public static void disable(Tile[][] tiles, ArrayList<Point> disableMap) {
-		for(Point p : disableMap) {
+		for (Point p : disableMap) {
 			tiles[p.x][p.y].disable();
 		}
 	}

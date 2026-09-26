@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class Helper {
 	public static void print(Object... toPrint) {
-		for(Object obj: toPrint) {
+		for (Object obj: toPrint) {
 			System.out.print(obj.toString() + "\t\t");
 		}
 		System.out.println();

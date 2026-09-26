@@ -66,16 +66,16 @@ public class Board {
 	}
 
 	public void tick(double elapsedSecond) {
-		for(int row = 0; row < this.rowCount; row++) {
-			for(int col = 0; col < this.colCount; col++) {
+		for (int row = 0; row < this.rowCount; row++) {
+			for (int col = 0; col < this.colCount; col++) {
 				this.tiles[row][col].tick(elapsedSecond);
 			}
 		}
 	}
 
 	public void render(Graphics2D g) {
-		for(int row = 0; row < this.rowCount; row++) {
-			for(int col = 0; col < this.colCount; col++) {
+		for (int row = 0; row < this.rowCount; row++) {
+			for (int col = 0; col < this.colCount; col++) {
 				this.tiles[row][col].render(g);
 			}
 		}

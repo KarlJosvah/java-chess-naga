@@ -93,13 +93,13 @@ public class Tile {
 			g.setFont(AssetsLoader.font_android_101.deriveFont(Font.BOLD, 16f));
 		}
 
-		if(Config.get().getTileAnnotation() == Config.TileAnnotation.ALL) {
+		if (Config.get().getTileAnnotation() == Config.TileAnnotation.ALL) {
 			Drawer.drawStringAnchored(g, this.getAnnotation(), this.getRect(), Drawer.Anchor.TOP_RIGHT, 2);
-		} else if(Config.get().getTileAnnotation() == Config.TileAnnotation.BORDER) {
-			if(this.col == 0) {
+		} else if (Config.get().getTileAnnotation() == Config.TileAnnotation.BORDER) {
+			if (this.col == 0) {
 				Drawer.drawStringAnchored(g, this.rank, this.getRect(), Drawer.Anchor.TOP_LEFT, 2);
 			}
-			if(this.row == 0) {
+			if (this.row == 0) {
 				Drawer.drawStringAnchored(g, this.file, this.getRect(), Drawer.Anchor.BOTTOM_RIGHT, 2);
 			}
 		}
