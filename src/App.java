@@ -13,7 +13,7 @@ public class App {
 		Main.VSYNC(false);
 		GameLoop.setTargetFPS(60);
 		GameStateHandler.setDefaultStateID(PlayState.ID);
-		Config.set(Config.defaultConfig());
+		Config.get().defaultConfig();
 	}
 
 // ======================================================================================================================================================

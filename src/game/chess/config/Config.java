@@ -1,18 +1,13 @@
 package game.chess.config;
 
-public class Config {
+public final class Config {
 
 // ======================================================================================================================================================
 
-	private static Config instance = Config.defaultConfig();
+	private static final Config instance = new Config();
 
-	public static void set(Config config) {
-		Config.instance = config;
-	}
-
-	public static Config get() {
-		return Config.instance;
-	}
+	private volatile Config.TileAnnotation tileAnnotation = Config.TileAnnotation.BORDER;
+	private volatile Config.WindowMode windowMode = Config.WindowMode.FULLSCREEN;
 
 // ======================================================================================================================================================
 
@@ -24,34 +19,28 @@ public class Config {
 	public enum WindowMode {
 		FULLSCREEN,
 		WINDOWED,
-		BORDERLESS;
-	}
-
-	private Config.TileAnnotation tileAnnotation;
-	private Config.WindowMode windowMode;
-
-// ======================================================================================================================================================
-
-	private Config(Builder builder) {
-		this.tileAnnotation = builder.tileAnnotation;
-		this.windowMode = builder.windowMode;
-	}
-
-	public static Config defaultConfig() {
-		return new Builder().build();
-	}
-
-	public static Config testConfig() {
-		return new Builder()
-			.setTileAnnotation(Config.TileAnnotation.ALL)
-			.setWindowMode(Config.WindowMode.BORDERLESS)
-			.build();
+		BORDERLESS
 	}
 
 // ======================================================================================================================================================
 
-	public static Builder builder() {
-		return new Builder();
+	private Config() {
+	}
+
+	public static Config get() {
+		return Config.instance;
+	}
+
+// ======================================================================================================================================================
+
+	public synchronized Config setTileAnnotation(Config.TileAnnotation tileAnnotation) {
+		this.tileAnnotation = tileAnnotation;
+		return this;
+	}
+
+	public synchronized Config setWindowMode(Config.WindowMode windowMode) {
+		this.windowMode = windowMode;
+		return this;
 	}
 
 	public Config.TileAnnotation getTileAnnotation() {
@@ -64,22 +53,13 @@ public class Config {
 
 // ======================================================================================================================================================
 
-	public static class Builder {
-		private Config.TileAnnotation tileAnnotation = Config.TileAnnotation.BORDER;
-		private Config.WindowMode windowMode = Config.WindowMode.FULLSCREEN;
+	public synchronized void defaultConfig() {
+		this.setTileAnnotation(Config.TileAnnotation.BORDER)
+			.setWindowMode(Config.WindowMode.FULLSCREEN);
+	}
 
-		public Builder setTileAnnotation(Config.TileAnnotation tileAnnotation) {
-			this.tileAnnotation = tileAnnotation;
-			return this;
-		}
-
-		public Builder setWindowMode(Config.WindowMode windowMode) {
-			this.windowMode = windowMode;
-			return this;
-		}
-
-		public Config build() {
-			return new Config(this);
-		}
+	public synchronized void testConfig() {
+		this.setTileAnnotation(Config.TileAnnotation.ALL)
+			.setWindowMode(Config.WindowMode.BORDERLESS);
 	}
 }
