@@ -6,11 +6,10 @@ import java.awt.Graphics2D;
 
 import game.chess.entity.Board;
 import game.chess.entity.Piece;
+import game.chess.layout.Layout;
 import game.chess.builder.BoardBuilder;
 import game.chess.builder.ChessBuilder;
 import game.chess.builder.LayoutBuilder;
-
-import game.chess.layout.Layout;
 
 import engine.Main;
 

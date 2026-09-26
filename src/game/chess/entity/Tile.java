@@ -1,5 +1,6 @@
 package game.chess.entity;
 
+import java.awt.Font;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Graphics2D;
@@ -7,6 +8,7 @@ import java.awt.Graphics2D;
 import tools.Helper;
 import engine.tools.AssetsLoader;
 import game.chess.helper.Drawer;
+import game.chess.config.Config;
 
 public class Tile {
 
@@ -77,7 +79,10 @@ public class Tile {
 	}
 
 	private void renderDisabled(Graphics2D g) {
+		// Do not render
 	}
+
+// ======================================================================================================================================================
 
 	private void renderAnnotation(Graphics2D g) {
 		g.setColor(Tile.TILE_COLORS[(this.row + this.col) % 2]);
@@ -85,10 +90,19 @@ public class Tile {
 		int paddingX = 4;
 		int paddingY = (int) (this.size * 0.25);
 		if (AssetsLoader.font_android_101 != null) {
-			g.setFont(AssetsLoader.font_android_101);
+			g.setFont(AssetsLoader.font_android_101.deriveFont(Font.BOLD, 16f));
 		}
-		
-		Drawer.drawStringAnchored(g, this.getAnnotation(), this.getRect(), Drawer.Anchor.TOP_RIGHT, 5);
+
+		if(Config.get().getTileAnnotation() == Config.TileAnnotation.ALL) {
+			Drawer.drawStringAnchored(g, this.getAnnotation(), this.getRect(), Drawer.Anchor.TOP_RIGHT, 2);
+		} else if(Config.get().getTileAnnotation() == Config.TileAnnotation.BORDER) {
+			if(this.col == 0) {
+				Drawer.drawStringAnchored(g, this.rank, this.getRect(), Drawer.Anchor.TOP_LEFT, 2);
+			}
+			if(this.row == 0) {
+				Drawer.drawStringAnchored(g, this.file, this.getRect(), Drawer.Anchor.BOTTOM_RIGHT, 2);
+			}
+		}
 	}
 
 // ======================================================================================================================================================
