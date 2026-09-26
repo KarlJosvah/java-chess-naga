@@ -117,15 +117,40 @@ public class BoardBuilder {
 				double posY = startY + ((rowCount - 1 - row) * tileSize);
 				
 				tiles[row][col].setPos(posX, posY);
+				BoardBuilder.annotate(tiles[row][col]);
 			}
 		}
 
 		return tiles;
 	}
 
+// ======================================================================================================================================================
+
 	public static void disable(Tile[][] tiles, ArrayList<Point> disableMap) {
 		for(Point p : disableMap) {
 			tiles[p.x][p.y].disable();
 		}
+	}
+
+// ======================================================================================================================================================
+
+	public static String getFileString(int col) {
+		StringBuilder file = new StringBuilder();
+		col += 1;
+
+		while(col > 0) {
+			col--;
+			char c = (char) ('a' + col % 26);
+			file.insert(0, c);
+			col /= 26;
+		}
+
+		return file.toString();
+	}
+
+	public static void annotate(Tile tile) {
+		String file = BoardBuilder.getFileString(tile.getCol());
+		String rank = "" + (tile.getRow() + 1);
+		tile.annotate(file, rank);
 	}
 }

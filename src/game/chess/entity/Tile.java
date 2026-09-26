@@ -1,8 +1,12 @@
 package game.chess.entity;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.Graphics2D;
+
 import tools.Helper;
+import engine.tools.AssetsLoader;
+import game.chess.helper.Drawer;
 
 public class Tile {
 
@@ -22,7 +26,10 @@ public class Tile {
 	private double y = 0;
 	private int row = 0;
 	private int col = 0;
+	private String file = "";
+	private String rank = "";
 	private double size = 0;
+
 	private Tile.Type type = Tile.Type.NORMAL;
 	private Piece piece = null;
 
@@ -59,16 +66,29 @@ public class Tile {
 // ======================================================================================================================================================
 
 	private void renderNormal(Graphics2D g) {
-		g.setColor(Tile.TILE_COLORS[(this.row + this.col) % 2]);
+		g.setColor(Tile.TILE_COLORS[(this.row + this.col + 1) % 2]);
 		g.fillRect(
 			(int) this.x,
 			(int) this.y,
 			(int) this.size,
 			(int) this.size
 		);
+		this.renderAnnotation(g);
 	}
 
 	private void renderDisabled(Graphics2D g) {
+	}
+
+	private void renderAnnotation(Graphics2D g) {
+		g.setColor(Tile.TILE_COLORS[(this.row + this.col) % 2]);
+
+		int paddingX = 4;
+		int paddingY = (int) (this.size * 0.25);
+		if (AssetsLoader.font_android_101 != null) {
+			g.setFont(AssetsLoader.font_android_101);
+		}
+		
+		Drawer.drawStringAnchored(g, this.getAnnotation(), this.getRect(), Drawer.Anchor.TOP_RIGHT, 5);
 	}
 
 // ======================================================================================================================================================
@@ -77,6 +97,34 @@ public class Tile {
 		this.x = x;
 		this.y = y;
 	}
+
+	public int getRow() {
+		return this.row;
+	}
+
+	public int getCol() {
+		return this.col;
+	}
+
+	public Rectangle getRect() {
+		return new Rectangle(
+			(int) this.x,
+			(int) this.y,
+			(int) this.size,
+			(int) this.size
+		);
+	}
+
+	public void annotate(String file, String rank) {
+		this.file = file;
+		this.rank = rank;
+	}
+
+	public String getAnnotation() {
+		return this.file + this.rank;
+	}
+
+// ======================================================================================================================================================
 
 	public void disable() {
 		this.type = Tile.Type.DISABLED;
