@@ -86,4 +86,14 @@ public class Board {
 	public void place(Piece piece, int row, int col) {
 		this.tiles[row][col].place(piece);
 	}
+
+	public Tile getTileAtPixel(int mouseX, int mouseY) {
+		int col = (int) ( (mouseX - this.rect.getX()) / this.getTileSize() );
+		int row = (int) ( (this.rect.getY() + this.rect.getHeight() - mouseY) / this.getTileSize() );
+
+		if (row >= 0 && row < this.rowCount && col >= 0 && col < this.colCount) {
+			return this.tiles[row][col];
+		}
+		return null;
+	}
 }

@@ -53,4 +53,18 @@ public class PlayState extends GameState {
 	@Override
 	public void closeState() {
 	}
+
+// ======================================================================================================================================================
+
+	@Override
+	public void input(InputEvent event) {
+		if (event.isMouse()) {
+			if (event.getType() == InputEvent.Type.MOUSE_PRESSED && event.getButton() == InputEvent.LEFT) {
+				this.chess.handleLeftClick(event.getX(), event.getY());
+			} else if (event.getType() == InputEvent.Type.MOUSE_PRESSED && event.getButton() == InputEvent.RIGHT) {
+				this.chess.handleRightClick(event.getX(), event.getY());
+			}
+			event.consume();
+		}
+	}
 }
