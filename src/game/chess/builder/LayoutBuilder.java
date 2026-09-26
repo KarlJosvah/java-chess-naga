@@ -35,12 +35,12 @@ public class LayoutBuilder {
 		layout.addPiece(Piece.Type.ROOK, Piece.Color.WHITE, 0, 7);
 
 		// White pawns (Row 1)
-		for(int col = 0; col < 8; col++) {
+		for (int col = 0; col < 8; col++) {
 			layout.addPiece(Piece.Type.PAWN, Piece.Color.WHITE, 1, col);
 		}
 
 		// Black pawns (Row 6)
-		for(int col = 0; col < 8; col++) {
+		for (int col = 0; col < 8; col++) {
 			layout.addPiece(Piece.Type.PAWN, Piece.Color.BLACK, 6, col);
 		}
 
@@ -72,7 +72,7 @@ public class LayoutBuilder {
 		layout.addPiece(Piece.Type.ROOK, Piece.Color.WHITE, 0, 10);
 
 		// Pawns (Row 1)
-		for(int col = 3; col <= 10; col++) {
+		for (int col = 3; col <= 10; col++) {
 			layout.addPiece(Piece.Type.PAWN, Piece.Color.WHITE, 1, col);
 		}
 
@@ -88,7 +88,7 @@ public class LayoutBuilder {
 		layout.addPiece(Piece.Type.ROOK, Piece.Color.WHITE, 13, 10);
 
 		// Pawns (Row 12)
-		for(int col = 3; col <= 10; col++) {
+		for (int col = 3; col <= 10; col++) {
 			layout.addPiece(Piece.Type.PAWN, Piece.Color.WHITE, 12, col);
 		}
 
@@ -104,7 +104,7 @@ public class LayoutBuilder {
 		layout.addPiece(Piece.Type.ROOK, Piece.Color.BLACK, 10, 0);
 
 		// Pawns (Col 1)
-		for(int row = 3; row <= 10; row++) {
+		for (int row = 3; row <= 10; row++) {
 			layout.addPiece(Piece.Type.PAWN, Piece.Color.BLACK, row, 1);
 		}
 
@@ -120,7 +120,7 @@ public class LayoutBuilder {
 		layout.addPiece(Piece.Type.ROOK, Piece.Color.BLACK, 10, 13);
 
 		// Pawns (Col 12)
-		for(int row = 3; row <= 10; row++) {
+		for (int row = 3; row <= 10; row++) {
 			layout.addPiece(Piece.Type.PAWN, Piece.Color.BLACK, row, 12);
 		}
 

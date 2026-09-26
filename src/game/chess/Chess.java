@@ -55,14 +55,14 @@ public class Chess {
 
 	public void tick(double elapsedSecond, long loopID) {
 		this.board.tick(elapsedSecond);
-		for(Piece piece: this.pieces) {
+		for (Piece piece: this.pieces) {
 			piece.tick(elapsedSecond);
 		}
 	}
 
 	public void render(Graphics2D g, int renderWidth, int renderHeight) {
 		this.board.render(g);
-		for(Piece piece: this.pieces) {
+		for (Piece piece: this.pieces) {
 			piece.render(g);
 		}
 	}
