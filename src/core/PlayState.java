@@ -17,7 +17,7 @@ public class PlayState extends GameState {
 
 // ======================================================================================================================================================
 
-	public static final StateID ID = StateID.of("MAIN");
+	public static final StateID ID = StateID.of("PLAY");
 
 	static {
 		GameStateHandler.registerState(PlayState.ID, new PlayState());
