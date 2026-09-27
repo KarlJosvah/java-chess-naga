@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Graphics2D;
 
+import game.chess.utils.BoardUtils;
 import game.chess.factory.BoardFactory;
 import game.chess.Chess;
 
@@ -59,10 +60,10 @@ public class Board {
 // ======================================================================================================================================================
 
 	public void init() {
-		this.rect = BoardFactory.boardRect(this.rowCount, this.colCount, this.margin);
+		this.rect = BoardUtils.boardRect(this.rowCount, this.colCount, this.margin);
 		this.tileSize = this.rect.getWidth() / this.colCount;
-		this.tiles = BoardFactory.buildTiles(this.rowCount, this.colCount, this.rect, this.tileSize);
-		BoardFactory.disable(this.tiles, this.disableMap);
+		this.tiles = BoardUtils.buildTiles(this.rowCount, this.colCount, this.rect, this.tileSize);
+		BoardUtils.disable(this.tiles, this.disableMap);
 	}
 
 	public void tick(double elapsedSecond) {
