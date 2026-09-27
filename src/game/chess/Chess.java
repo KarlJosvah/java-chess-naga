@@ -8,9 +8,9 @@ import game.chess.entity.Tile;
 import game.chess.entity.Board;
 import game.chess.entity.Piece;
 import game.chess.layout.Layout;
-import game.chess.builder.BoardBuilder;
-import game.chess.builder.ChessBuilder;
-import game.chess.builder.LayoutBuilder;
+import game.chess.factory.BoardFactory;
+import game.chess.factory.ChessFactory;
+import game.chess.factory.LayoutFactory;
 
 import engine.Main;
 
@@ -43,15 +43,15 @@ public class Chess {
 
 	public Chess(Type type) {
 		this.type = type;
-		this.board = BoardBuilder.of(this.type);
+		this.board = BoardFactory.of(this.type);
 	}
 
 // ======================================================================================================================================================
 
 	public void init() {
 		this.board.init();
-		this.layout = LayoutBuilder.of(this.type);
-		ChessBuilder.placePieces(this.board, this.layout, this.pieces);
+		this.layout = LayoutFactory.of(this.type);
+		ChessFactory.placePieces(this.board, this.layout, this.pieces);
 	}
 
 	public void tick(double elapsedSecond, long loopID) {

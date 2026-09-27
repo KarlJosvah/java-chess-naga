@@ -1,30 +1,30 @@
-package game.chess.builder;
+package game.chess.factory;
 
 import game.chess.entity.Piece;
 import game.chess.layout.LayoutEntry;
 
 import tools.SVGLoader;
 
-public class PieceBuilder {
+public class PieceFactory {
 	
 // ======================================================================================================================================================
 
 	public static Piece of(Piece.Type type, Piece.Color color, float tileSize) {
 		switch (type) {
 			case PAWN:
-				return PieceBuilder.ofPawn(color, tileSize);
+				return PieceFactory.ofPawn(color, tileSize);
 			case ROOK:
-				return PieceBuilder.ofRook(color, tileSize);
+				return PieceFactory.ofRook(color, tileSize);
 			case KNIGHT:
-				return PieceBuilder.ofKnight(color, tileSize);
+				return PieceFactory.ofKnight(color, tileSize);
 			case BISHOP:
-				return PieceBuilder.ofBishop(color, tileSize);
+				return PieceFactory.ofBishop(color, tileSize);
 			case QUEEN:
-				return PieceBuilder.ofQueen(color, tileSize);
+				return PieceFactory.ofQueen(color, tileSize);
 			case KING:
-				return PieceBuilder.ofKing(color, tileSize);
+				return PieceFactory.ofKing(color, tileSize);
 			default:
-				return PieceBuilder.ofPawn(color, tileSize);
+				return PieceFactory.ofPawn(color, tileSize);
 		}
 	}
 
@@ -67,6 +67,6 @@ public class PieceBuilder {
 // ======================================================================================================================================================
 
 	public static Piece from(LayoutEntry entry, float tileSize) {
-		return PieceBuilder.of(entry.getType(), entry.getColor(), tileSize);
+		return PieceFactory.of(entry.getType(), entry.getColor(), tileSize);
 	}
 }

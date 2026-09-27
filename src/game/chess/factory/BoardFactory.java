@@ -1,4 +1,4 @@
-package game.chess.builder;
+package game.chess.factory;
 
 import java.util.ArrayList;
 
@@ -9,20 +9,20 @@ import game.chess.Chess;
 import game.chess.entity.Board;
 import game.chess.entity.Tile;
 
-public class BoardBuilder {
+public class BoardFactory {
 
 // ======================================================================================================================================================
 
 	public static Board of(Chess.Type type) {
 		switch (type) {
 			case CLASSIC:
-				return BoardBuilder.ofClassic();
+				return BoardFactory.ofClassic();
 			case GIANT:
-				return BoardBuilder.ofGiant();
+				return BoardFactory.ofGiant();
 			case FOUR_PLAYER:
-				return BoardBuilder.ofFourPlayer();
+				return BoardFactory.ofFourPlayer();
 			default:
-				return BoardBuilder.ofClassic();
+				return BoardFactory.ofClassic();
 		}
 	}
 
@@ -117,7 +117,7 @@ public class BoardBuilder {
 				double posY = startY + ((rowCount - 1 - row) * tileSize);
 				
 				tiles[row][col].setPos(posX, posY);
-				BoardBuilder.annotate(tiles[row][col]);
+				BoardFactory.annotate(tiles[row][col]);
 			}
 		}
 
@@ -149,7 +149,7 @@ public class BoardBuilder {
 	}
 
 	public static void annotate(Tile tile) {
-		String file = BoardBuilder.getFileString(tile.getCol());
+		String file = BoardFactory.getFileString(tile.getCol());
 		String rank = "" + (tile.getRow() + 1);
 		tile.annotate(file, rank);
 	}

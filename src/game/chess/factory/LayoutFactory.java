@@ -1,4 +1,4 @@
-package game.chess.builder;
+package game.chess.factory;
 
 import java.util.ArrayList;
 
@@ -6,18 +6,18 @@ import game.chess.Chess;
 import game.chess.entity.Piece;
 import game.chess.layout.Layout;
 
-public class LayoutBuilder {
+public class LayoutFactory {
 
 // ======================================================================================================================================================
 
 	public static Layout of(Chess.Type type) {
 		switch(type) {
 			case CLASSIC:
-				return LayoutBuilder.ofClassic();
+				return LayoutFactory.ofClassic();
 			case FOUR_PLAYER:
-				return LayoutBuilder.ofFourPlayer();
+				return LayoutFactory.ofFourPlayer();
 			default:
-				return LayoutBuilder.ofClassic();
+				return LayoutFactory.ofClassic();
 		}
 	}
 
