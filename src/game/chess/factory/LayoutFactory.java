@@ -11,7 +11,7 @@ public class LayoutFactory {
 // ======================================================================================================================================================
 
 	public static Layout of(Chess.Type type) {
-		switch(type) {
+		switch (type) {
 			case CLASSIC:
 				return LayoutFactory.ofClassic();
 			case FOUR_PLAYER:

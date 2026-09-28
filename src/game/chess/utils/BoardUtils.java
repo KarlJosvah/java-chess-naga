@@ -61,7 +61,7 @@ public class BoardUtils {
 		StringBuilder file = new StringBuilder();
 		col += 1;
 
-		while(col > 0) {
+		while (col > 0) {
 			col--;
 			char c = (char) ('a' + col % 26);
 			file.insert(0, c);

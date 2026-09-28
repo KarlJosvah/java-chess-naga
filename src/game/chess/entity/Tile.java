@@ -52,7 +52,7 @@ public class Tile {
 	}
 
 	public void render(Graphics2D g) {
-		switch(this.type) {
+		switch (this.type) {
 			case NORMAL:
 				this.renderNormal(g);
 				break;
