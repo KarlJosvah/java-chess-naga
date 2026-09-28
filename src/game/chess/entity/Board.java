@@ -25,10 +25,6 @@ public class Board {
 	public Board() {
 	}
 
-	public void disablePosition(Position pos) {
-		this.disabledPosition.add(pos);
-	}
-
 // ======================================================================================================================================================
 
 	public void setMargin(int margin) {
@@ -84,9 +80,15 @@ public class Board {
 
 // ======================================================================================================================================================
 
+	public void disablePosition(Position pos) {
+		this.disabledPosition.add(pos);
+	}
+
 	public void place(Piece piece, int row, int col) {
 		this.tiles[row][col].place(piece);
 	}
+
+// ======================================================================================================================================================
 
 	public Tile getTileAtPixel(int mouseX, int mouseY) {
 		int col = (int) ( (mouseX - this.rect.getX()) / this.getTileSize() );
@@ -96,5 +98,26 @@ public class Board {
 			return this.tiles[row][col];
 		}
 		return null;
+	}
+
+	public boolean isValidPosition(Position targetPos) {
+		try {
+			return this.tiles[targetPos.getRow()][targetPos.getCol()].getType() != Tile.Type.DISABLED;
+		} catch (NullPointerException e) {
+			return false;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean isEmpty(Position targetPos) {
+		return this.tiles[targetPos.getRow()][targetPos.getCol()].getPiece() == null;
+	}
+
+	public boolean isEnemyPiece(Position currentPosition, Position targetPos) {
+		return this.tiles[currentPosition.getRow()][currentPosition.getCol()].isEnemyPiece(this.tiles[targetPos.getRow()][targetPos.getCol()]);
 	}
 }

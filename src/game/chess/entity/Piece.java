@@ -65,7 +65,21 @@ public class Piece {
 		this.sprite = sprite;
 	}
 
+	public Piece.Type getType() {
+		return this.type;
+	}
+
+	public Piece.Color getColor() {
+		return this.color;
+	}
+
+// ======================================================================================================================================================
+
+	public boolean isEnemyPiece(Piece anotherPiece) {
+		return this.getColor() == anotherPiece.getColor();
+	}
+
 	public String toString() {
-		return "" + this.type.name() + " " + this.color.name();
+		return "" + this.getType().name() + " " + this.getColor().name();
 	}
 }

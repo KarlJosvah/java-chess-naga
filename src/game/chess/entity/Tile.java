@@ -119,6 +119,10 @@ public class Tile {
 		return this.position.getCol();
 	}
 
+	public Tile.Type getType() {
+		return this.type;
+	}
+
 	public Rectangle getRect() {
 		return new Rectangle(
 			this.coordinate.getX(),
@@ -127,6 +131,16 @@ public class Tile {
 			this.size
 		);
 	}
+
+	public Piece getPiece() {
+		return this.piece;
+	}
+
+	public boolean isEnemyPiece(Tile anotherTile) {
+		return this.getPiece().isEnemyPiece(anotherTile.getPiece());
+	}
+
+// ======================================================================================================================================================
 
 	public void annotate(String file, String rank) {
 		this.file = file;
