@@ -2,6 +2,7 @@ package game.chess.entity;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import game.chess.utils.Coordinate;
 
 public class Piece {
 
@@ -21,9 +22,7 @@ public class Piece {
 
 // ======================================================================================================================================================
 
-	private double x = 0;
-	private double y = 0;
-
+	private Coordinate coordinate;
 	private Piece.Type type;
 	private Piece.Color color;
 	private BufferedImage sprite;
@@ -50,17 +49,16 @@ public class Piece {
 	public void render(Graphics2D g) {
 		g.drawImage(
 			this.sprite,
-			(int) this.x,
-			(int) this.y,
+			this.coordinate.getX(),
+			this.coordinate.getY(),
 			null
 		);
 	}
 
 // ======================================================================================================================================================
 
-	public void setPos(double x, double y) {
-		this.x = x;
-		this.y = y;
+	public void setCoordinate(Coordinate coordinate) {
+		this.coordinate = coordinate;
 	}
 
 	public void setSprite(BufferedImage sprite) {

@@ -2,13 +2,16 @@ package game.chess.entity;
 
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.Graphics2D;
 
 import tools.Helper;
 import engine.tools.AssetsLoader;
+
 import game.chess.helper.Drawer;
 import game.chess.config.Config;
+import game.chess.utils.Position;
+import game.chess.utils.Rectangle;
+import game.chess.utils.Coordinate;
 
 public class Tile {
 
@@ -24,22 +27,19 @@ public class Tile {
 		Helper.getColorFromHex("#779556")
 	};
 
-	private double x = 0;
-	private double y = 0;
-	private int row = 0;
-	private int col = 0;
+	private Coordinate coordinate;
+	private Position position;
 	private String file = "";
 	private String rank = "";
-	private double size = 0;
+	private int size = 0;
 
 	private Tile.Type type = Tile.Type.NORMAL;
 	private Piece piece = null;
 
 // ======================================================================================================================================================
 
-	public Tile(int row, int col, double size) {
-		this.row = row;
-		this.col = col;
+	public Tile(Position position, int size) {
+		this.position = position;
 		this.size = size;
 	}
 
@@ -68,12 +68,12 @@ public class Tile {
 // ======================================================================================================================================================
 
 	private void renderNormal(Graphics2D g) {
-		g.setColor(Tile.TILE_COLORS[(this.row + this.col + 1) % 2]);
+		g.setColor(Tile.TILE_COLORS[(this.position.getRow() + this.position.getCol() + 1) % 2]);
 		g.fillRect(
-			(int) this.x,
-			(int) this.y,
-			(int) this.size,
-			(int) this.size
+			this.coordinate.getX(),
+			this.coordinate.getY(),
+			this.size,
+			this.size
 		);
 		this.renderAnnotation(g);
 	}
@@ -85,7 +85,7 @@ public class Tile {
 // ======================================================================================================================================================
 
 	private void renderAnnotation(Graphics2D g) {
-		g.setColor(Tile.TILE_COLORS[(this.row + this.col) % 2]);
+		g.setColor(Tile.TILE_COLORS[(this.position.getRow() + this.position.getCol()) % 2]);
 
 		int paddingX = 4;
 		int paddingY = (int) (this.size * 0.25);
@@ -96,10 +96,10 @@ public class Tile {
 		if (Config.get().getTileAnnotation() == Config.TileAnnotation.ALL) {
 			Drawer.drawStringAnchored(g, this.getAnnotation(), this.getRect(), Drawer.Anchor.TOP_RIGHT, 2);
 		} else if (Config.get().getTileAnnotation() == Config.TileAnnotation.BORDER) {
-			if (this.col == 0) {
+			if (this.position.getCol() == 0) {
 				Drawer.drawStringAnchored(g, this.rank, this.getRect(), Drawer.Anchor.TOP_LEFT, 2);
 			}
-			if (this.row == 0) {
+			if (this.position.getRow() == 0) {
 				Drawer.drawStringAnchored(g, this.file, this.getRect(), Drawer.Anchor.BOTTOM_RIGHT, 2);
 			}
 		}
@@ -107,25 +107,24 @@ public class Tile {
 
 // ======================================================================================================================================================
 
-	public void setPos(double x, double y) {
-		this.x = x;
-		this.y = y;
+	public void setCoordinate(Coordinate coordinate) {
+		this.coordinate = coordinate;
 	}
 
 	public int getRow() {
-		return this.row;
+		return this.position.getRow();
 	}
 
 	public int getCol() {
-		return this.col;
+		return this.position.getCol();
 	}
 
 	public Rectangle getRect() {
 		return new Rectangle(
-			(int) this.x,
-			(int) this.y,
-			(int) this.size,
-			(int) this.size
+			this.coordinate.getX(),
+			this.coordinate.getY(),
+			this.size,
+			this.size
 		);
 	}
 
@@ -149,7 +148,7 @@ public class Tile {
 			throw new IllegalStateException("Cannot place a piece on a disabled tile");
 		}
 		this.piece = piece;
-		this.piece.setPos(this.x, this.y);
+		this.piece.setCoordinate(this.coordinate.copy());
 	}
 
 // ======================================================================================================================================================

@@ -1,8 +1,8 @@
 package game.chess.helper;
 
-import java.awt.Rectangle;
 import java.awt.Graphics2D;
 import java.awt.FontMetrics;
+import game.chess.utils.Rectangle;
 
 public class Drawer {
 
@@ -31,45 +31,45 @@ public class Drawer {
 		int textWidth = metrics.stringWidth(text);
 		int textHeight = metrics.getHeight();
 
-		int x = rect.x;
-		int y = rect.y;
+		int x = rect.getX();
+		int y = rect.getY();
 
 		switch (anchor) {
 			case TOP_LEFT:
-				x = rect.x + margin;
-				y = rect.y + margin;
+				x = rect.getX() + margin;
+				y = rect.getY() + margin;
 				break;
 			case NORTH:
-				x = rect.x + (rect.width - textWidth) / 2;
-				y = rect.y + margin;
+				x = rect.getX() + (rect.getWidth() - textWidth) / 2;
+				y = rect.getY() + margin;
 				break;
 			case TOP_RIGHT:
-				x = rect.x + rect.width - textWidth - margin;
-				y = rect.y + margin;
+				x = rect.getX() + rect.getWidth() - textWidth - margin;
+				y = rect.getY() + margin;
 				break;
 			case WEST:
-				x = rect.x + margin;
-				y = rect.y + (rect.height - textHeight) / 2;
+				x = rect.getX() + margin;
+				y = rect.getY() + (rect.getHeight() - textHeight) / 2;
 				break;
 			case CENTER:
-				x = rect.x + (rect.width - textWidth) / 2;
-				y = rect.y + (rect.height - textHeight) / 2;
+				x = rect.getX() + (rect.getWidth() - textWidth) / 2;
+				y = rect.getY() + (rect.getHeight() - textHeight) / 2;
 				break;
 			case EAST:
-				x = rect.x + rect.width - textWidth - margin;
-				y = rect.y + (rect.height - textHeight) / 2;
+				x = rect.getX() + rect.getWidth() - textWidth - margin;
+				y = rect.getY() + (rect.getHeight() - textHeight) / 2;
 				break;
 			case BOTTOM_LEFT:
-				x = rect.x + margin;
-				y = rect.y + rect.height - textHeight - margin;
+				x = rect.getX() + margin;
+				y = rect.getY() + rect.getHeight() - textHeight - margin;
 				break;
 			case SOUTH:
-				x = rect.x + (rect.width - textWidth) / 2;
-				y = rect.y + rect.height - textHeight - margin;
+				x = rect.getX() + (rect.getWidth() - textWidth) / 2;
+				y = rect.getY() + rect.getHeight() - textHeight - margin;
 				break;
 			case BOTTOM_RIGHT:
-				x = rect.x + rect.width - textWidth - margin;
-				y = rect.y + rect.height - textHeight - margin;
+				x = rect.getX() + rect.getWidth() - textWidth - margin;
+				y = rect.getY() + rect.getHeight() - textHeight - margin;
 				break;
 		}
 

@@ -2,6 +2,7 @@ package game.chess.factory;
 
 import game.chess.Chess;
 import game.chess.entity.Board;
+import game.chess.utils.Position;
 
 public class BoardFactory {
 
@@ -48,30 +49,30 @@ public class BoardFactory {
 		board.setMargin(margin);
 
 		// Disable TOP-LEFT
-		for (int row = 0; row < crease; row++) {
+		for (int row = rowCount - 1; row >= rowCount - crease; row--) {
 			for (int col = 0; col < crease; col++) {
-				board.disable(row, col);
+				board.disablePosition(new Position(row, col));
 			}
 		}
 
 		// Disable TOP-RIGHT
-		for (int row = 0; row < crease; row++) {
+		for (int row = rowCount - 1; row >= rowCount - crease; row--) {
 			for (int col = colCount - 1; col >= colCount - crease; col--) {
-				board.disable(row, col);
+				board.disablePosition(new Position(row, col));
 			}
 		}
 
 		// Disable BOTTOM-LEFT
-		for (int row = rowCount - 1; row >= rowCount - crease; row--) {
+		for (int row = 0; row < crease; row++) {
 			for (int col = 0; col < crease; col++) {
-				board.disable(row, col);
+				board.disablePosition(new Position(row, col));
 			}
 		}
 
 		// Disable BOTTOM-RIGHT
-		for (int row = rowCount - 1; row >= rowCount - crease; row--) {
+		for (int row = 0; row < crease; row++) {
 			for (int col = colCount - 1; col >= colCount - crease; col--) {
-				board.disable(row, col);
+				board.disablePosition(new Position(row, col));
 			}
 		}
 

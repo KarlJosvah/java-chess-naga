@@ -2,13 +2,13 @@ package game.chess.entity;
 
 import java.util.ArrayList;
 
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Graphics2D;
 
+import game.chess.Chess;
+import game.chess.utils.Position;
+import game.chess.utils.Rectangle;
 import game.chess.utils.BoardUtils;
 import game.chess.factory.BoardFactory;
-import game.chess.Chess;
 
 public class Board {
 	private int margin = 0;
@@ -17,16 +17,16 @@ public class Board {
 
 	private Tile[][] tiles = null;
 	private Rectangle rect = null;
-	private ArrayList<Point> disableMap = new ArrayList<Point>();
-	private double tileSize = 0;
+	private ArrayList<Position> disabledPosition = new ArrayList<Position>();
+	private int tileSize = 0;
 
 // ======================================================================================================================================================
 
 	public Board() {
 	}
 
-	public void disable(int x, int y) {
-		this.disableMap.add(new Point(x, y));
+	public void disablePosition(Position pos) {
+		this.disabledPosition.add(pos);
 	}
 
 // ======================================================================================================================================================
@@ -53,7 +53,7 @@ public class Board {
 		return this.colCount;
 	}
 
-	public double getTileSize() {
+	public int getTileSize() {
 		return this.tileSize;
 	}
 
@@ -63,7 +63,7 @@ public class Board {
 		this.rect = BoardUtils.boardRect(this.rowCount, this.colCount, this.margin);
 		this.tileSize = this.rect.getWidth() / this.colCount;
 		this.tiles = BoardUtils.buildTiles(this.rowCount, this.colCount, this.rect, this.tileSize);
-		BoardUtils.disable(this.tiles, this.disableMap);
+		BoardUtils.disable(this.tiles, this.disabledPosition);
 	}
 
 	public void tick(double elapsedSecond) {

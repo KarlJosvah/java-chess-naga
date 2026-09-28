@@ -1,19 +1,21 @@
 package game.chess.utils;
 
 import java.util.ArrayList;
-import java.awt.Point;
-import java.awt.Rectangle;
+
 import game.chess.Chess;
 import game.chess.entity.Tile;
+import game.chess.utils.Position;
+import game.chess.utils.Rectangle;
+import game.chess.utils.Coordinate;
 
 public class BoardUtils {
 	public static Rectangle boardRect(int rowCount, int colCount, int margin) {
-		double availWidth = Chess.WIDTH - (margin * 2);
-		double availHeight = Chess.HEIGHT - (margin * 2);
+		int availWidth = Chess.WIDTH - (margin * 2);
+		int availHeight = Chess.HEIGHT - (margin * 2);
 
-		double maxTileW = availWidth / colCount;
-		double maxTileH = availHeight / rowCount;
-		int tileSize = (int) Math.min(maxTileW, maxTileH);
+		int maxTileW = availWidth / colCount;
+		int maxTileH = availHeight / rowCount;
+		int tileSize = Math.min(maxTileW, maxTileH);
 
 		int w = tileSize * colCount;
 		int h = tileSize * rowCount;
@@ -23,21 +25,21 @@ public class BoardUtils {
 		return new Rectangle(x, y, w, h);
 	}
 
-	public static Tile[][] buildTiles(int rowCount, int colCount, Rectangle rect, double tileSize) {
+	public static Tile[][] buildTiles(int rowCount, int colCount, Rectangle rect, int tileSize) {
 		Tile[][] tiles = new Tile[rowCount][colCount];
 
-		double startX = rect.getX();
-		double startY = rect.getY();
+		int startX = rect.getX();
+		int startY = rect.getY();
 
 		for (int row = 0; row < rowCount; row++) {
 			for (int col = 0; col < colCount; col++) {
-				tiles[row][col] = new Tile(row, col, tileSize);
+				tiles[row][col] = new Tile(new Position(row, col), tileSize);
 				
 				// Calculate Y position so row 0 is at the bottom and rowCount - 1 is at the top
-				double posX = startX + (col * tileSize);
-				double posY = startY + ((rowCount - 1 - row) * tileSize);
+				int posX = startX + (col * tileSize);
+				int posY = startY + ((rowCount - 1 - row) * tileSize);
 				
-				tiles[row][col].setPos(posX, posY);
+				tiles[row][col].setCoordinate(new Coordinate(posX, posY));
 				BoardUtils.annotate(tiles[row][col]);
 			}
 		}
@@ -47,9 +49,9 @@ public class BoardUtils {
 
 // ======================================================================================================================================================
 
-	public static void disable(Tile[][] tiles, ArrayList<Point> disableMap) {
-		for (Point p : disableMap) {
-			tiles[p.x][p.y].disable();
+	public static void disable(Tile[][] tiles, ArrayList<Position> disabledPosition) {
+		for (Position pos : disabledPosition) {
+			tiles[pos.getRow()][pos.getCol()].disable();
 		}
 	}
 
