@@ -12,6 +12,7 @@ import engine.gamestate.GameStateHandler;
 
 import game.chess.Chess;
 import game.chess.entity.Board;
+import game.chess.config.Config;
 
 public class PlayState extends GameState {
 
@@ -65,6 +66,11 @@ public class PlayState extends GameState {
 				this.chess.handleRightClick(event.getX(), event.getY());
 			}
 			event.consume();
+		}
+		if (event.isKey()) {
+			if (event.getType() == InputEvent.Type.KEY_PRESSED && event.getKeyCode() == KeyEvent.VK_P) {
+				Config.get().toggleParticle();
+			}
 		}
 	}
 }

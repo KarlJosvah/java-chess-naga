@@ -9,7 +9,7 @@ public final class Config {
 	private volatile Config.TileAnnotation tileAnnotation = Config.TileAnnotation.BORDER;
 	private volatile Config.WindowMode windowMode = Config.WindowMode.FULLSCREEN;
 
-	private volatile boolean enableParticle = true;
+	private volatile boolean enableParticle = false;
 	private volatile double particleRadiusRateFromTileSize = 15.0;
 	private volatile double particleSpawnDelay = 0.2;
 	private volatile double particleMaxDistanceFromTileSize = 0.75;
@@ -106,10 +106,16 @@ public final class Config {
 
 // ======================================================================================================================================================
 
+	public synchronized void toggleParticle() {
+		this.setEnableParticle(!this.getEnableParticle());
+	}
+
+// ======================================================================================================================================================
+
 	public synchronized void defaultConfig() {
 		this.setTileAnnotation(Config.TileAnnotation.BORDER)
 			.setWindowMode(Config.WindowMode.FULLSCREEN)
-			.setEnableParticle(true)
+			.setEnableParticle(false)
 			.setParticleRadiusRateFromTileSize(15.0)
 			.setParticleSpawnDelay(0.2)
 			.setParticleMaxDistanceFromTileSize(0.75)

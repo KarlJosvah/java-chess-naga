@@ -127,6 +127,7 @@ public class Tile {
 
 	private void tickParticles(double elapsedSecond) {
 		if (Config.get().getEnableParticle() == false) {
+			this.clearParticles();
 			return;
 		}
 		if (this.piece != null && this.piece.getType() == Piece.Type.KING) {
@@ -134,8 +135,8 @@ public class Tile {
 
 			this.spawnNewParticle();
 			this.updateParticles(elapsedSecond);
-		} else if (!this.particles.isEmpty()) {
-			this.particles.clear();
+		} else {
+			this.clearParticles();
 		}
 	}
 
@@ -167,6 +168,12 @@ public class Tile {
 			if (p.isDead()) {
 				this.particles.remove(i);
 			}
+		}
+	}
+
+	private void clearParticles() {
+		if (!this.particles.isEmpty()) {
+			this.particles.clear();
 		}
 	}
 
