@@ -50,21 +50,48 @@ public class MoveFactory {
 
 	private static List<MoveBehavior> ofKnight() {
 		Set<MoveBehavior> behaviors = new HashSet<>();
+
+		int[][] offsets = {
+			{1, 2}, {1, -2}, {-1, 2}, {-1, -2},
+			{2, 1}, {2, -1}, {-2, 1}, {-2, -1}
+		};
+		for (int[] offset : offsets) {
+			behaviors.add(new LeapMoveBehavior(offset[0], offset[1]));
+		}
+
 		return List.copyOf(behaviors);
 	}
 
 	private static List<MoveBehavior> ofBishop() {
 		Set<MoveBehavior> behaviors = new HashSet<>();
+
+		for (Direction dir : Direction.DIAGONAL_DIRS) {
+			behaviors.add(new LinearMoveBehavior(dir, Integer.MAX_VALUE));
+		}
+
 		return List.copyOf(behaviors);
 	}
 
 	private static List<MoveBehavior> ofQueen() {
 		Set<MoveBehavior> behaviors = new HashSet<>();
+
+		behaviors.addAll(MoveFactory.ofRook());
+		behaviors.addAll(MoveFactory.ofBishop());
+
 		return List.copyOf(behaviors);
 	}
 
 	private static List<MoveBehavior> ofKing() {
 		Set<MoveBehavior> behaviors = new HashSet<>();
+
+		for (Direction dir : Direction.STRAIGHT_DIRS) {
+			behaviors.add(new LinearMoveBehavior(dir, 1));
+		}
+
+		for (Direction dir : Direction.DIAGONAL_DIRS) {
+			behaviors.add(new LinearMoveBehavior(dir, 1));
+		}
+
 		return List.copyOf(behaviors);
 	}
 }
