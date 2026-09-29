@@ -162,6 +162,8 @@ public class Tile {
 			throw new IllegalStateException("Cannot place a piece on a disabled tile");
 		}
 		this.piece = piece;
+		this.piece.setTile(this);
+		this.piece.setPosition(this.position.copy());
 		this.piece.setCoordinate(this.coordinate.copy());
 	}
 

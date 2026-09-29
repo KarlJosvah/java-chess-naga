@@ -13,6 +13,9 @@ public enum Direction {
 	private final int dx;
 	private final int dy;
 
+	public static final Direction[] STRAIGHT_DIRS = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
+	public static final Direction[] DIAGONAL_DIRS = {Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.SOUTH_EAST, Direction.SOUTH_WEST};
+
 	Direction(int dx, int dy) {
 		this.dx = dx;
 		this.dy = dy;

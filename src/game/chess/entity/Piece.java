@@ -1,8 +1,17 @@
 package game.chess.entity;
 
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+import game.chess.entity.Tile;
+import game.chess.entity.Board;
+import game.chess.utils.Position;
 import game.chess.utils.Coordinate;
+import game.chess.movement.MoveBehavior;
 
 public class Piece {
 
@@ -22,10 +31,13 @@ public class Piece {
 
 // ======================================================================================================================================================
 
+	private Position position;
 	private Coordinate coordinate;
+	private Tile tile;
 	private Piece.Type type;
 	private Piece.Color color;
 	private BufferedImage sprite;
+	private final List<MoveBehavior> behaviors;
 
 // ======================================================================================================================================================
 
@@ -36,6 +48,7 @@ public class Piece {
 	public Piece(Piece.Type type, Piece.Color color) {
 		this.type = type;
 		this.color = color;
+		this.behaviors = new ArrayList<>();
 	}
 
 // ======================================================================================================================================================
@@ -61,6 +74,14 @@ public class Piece {
 		this.coordinate = coordinate;
 	}
 
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
+	public void setTile(Tile tile) {
+		this.tile = tile;
+	}
+
 	public void setSprite(BufferedImage sprite) {
 		this.sprite = sprite;
 	}
@@ -71,6 +92,26 @@ public class Piece {
 
 	public Piece.Color getColor() {
 		return this.color;
+	}
+
+// ======================================================================================================================================================
+
+	public void addBehavior(MoveBehavior behavior) {
+		this.behaviors.add(behavior);
+	}
+
+	public void addAllBehaviors(List<MoveBehavior> behaviors) {
+		this.behaviors.addAll(behaviors);
+	}
+
+	public Set<Position> getValidMoves(Board board) {
+		Set<Position> validMoves = new HashSet<>();
+
+		for (MoveBehavior behavior : this.behaviors) {
+			validMoves.addAll(behavior.getPossibleMoves(this.position, board));
+		}
+
+		return validMoves;
 	}
 
 // ======================================================================================================================================================

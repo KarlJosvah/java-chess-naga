@@ -2,6 +2,7 @@ package game.chess.factory;
 
 import game.chess.entity.Piece;
 import game.chess.layout.LayoutEntry;
+import game.chess.factory.MoveFactory;
 
 import tools.SVGLoader;
 
@@ -37,6 +38,7 @@ public class PieceFactory {
 	private static Piece ofRook(Piece.Color color, float tileSize) {
 		Piece rook = new Piece(Piece.Type.ROOK, color);
 		rook.setSprite(SVGLoader.loadPieceSvg(color == Piece.Color.BLACK ? "rb.svg" : "rw.svg", tileSize, tileSize));
+		rook.addAllBehaviors(MoveFactory.of(Piece.Type.ROOK));
 		return rook;
 	}
 
