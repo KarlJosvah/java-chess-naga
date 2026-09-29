@@ -3,6 +3,8 @@ package game.chess.entity;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.BasicStroke;
+import java.awt.geom.Ellipse2D;
 
 import tools.Helper;
 import engine.tools.AssetsLoader;
@@ -17,10 +19,22 @@ public class Tile {
 
 	public enum Type {
 		NORMAL,
-		DISABLED;
+		DISABLED,
+		POSSIBLE_MOVE,
+		CAPTURE,
+		FLAG_RED,
+		FLAG_GREEN,
+		FLAG_BLUE,
+		FLAG_ORANGE;
 	}
 
 // ======================================================================================================================================================
+
+	public static double POSSIBLE_MOVE_CIRCLE_RADIUS_RATE = 20.0;
+	public static double CAPTURE_CIRCLE_RADIUS_RATE = 60.0;
+	public static double CAPTURE_CIRCLE_THICHNESS_RATE = 10.0;
+
+	public static Color CIRCLE_COLOR = Helper.getColorFromHex("#4b4b4b40");
 
 	private static final Color[] TILE_COLORS = {
 		Helper.getColorFromHex("#EBECD0"),
@@ -65,6 +79,31 @@ public class Tile {
 		}
 	}
 
+	public void renderHighlight(Graphics2D g) {
+		switch (this.type) {
+			case POSSIBLE_MOVE:
+				this.renderPossibleMove(g);
+				break;
+			case CAPTURE:
+				this.renderCapture(g);
+				break;
+			case FLAG_RED:
+				this.renderFlagRed(g);
+				break;
+			case FLAG_GREEN:
+				this.renderFlagGreen(g);
+				break;
+			case FLAG_BLUE:
+				this.renderFlagBlue(g);
+				break;
+			case FLAG_ORANGE:
+				this.renderFlagOrange(g);
+				break;
+			default:
+				break;
+		}
+	}
+
 // ======================================================================================================================================================
 
 	private void renderNormal(Graphics2D g) {
@@ -80,6 +119,44 @@ public class Tile {
 
 	private void renderDisabled(Graphics2D g) {
 		// Do not render
+	}
+
+	private void renderPossibleMove(Graphics2D g) {
+		int radius = (int) Helper.percent(this.size, Tile.POSSIBLE_MOVE_CIRCLE_RADIUS_RATE);
+		int x = this.coordinate.getX() + ( (this.size - radius) / 2 );
+		int y = this.coordinate.getY() + ( (this.size - radius) / 2 );
+
+		g.setColor(Tile.CIRCLE_COLOR);
+		g.fillOval(x, y, radius, radius);
+	}
+
+	private void renderCapture(Graphics2D g) {
+		int radius = (int) Helper.percent(this.size, Tile.CAPTURE_CIRCLE_RADIUS_RATE);
+		float thickness = (int) Helper.percent(this.size, Tile.CAPTURE_CIRCLE_THICHNESS_RATE);
+		int x = this.coordinate.getX() + ( (this.size - radius) / 2 );
+		int y = this.coordinate.getY() + ( (this.size - radius) / 2 );
+
+		Graphics2D g2d = (Graphics2D) g.create();
+		try {
+			g2d.setColor(Tile.CIRCLE_COLOR);
+			g2d.setStroke(new BasicStroke(thickness));
+			Ellipse2D ring = new Ellipse2D.Double(x, y, radius, radius);
+			g2d.draw(ring);
+		} finally {
+			g2d.dispose();
+		}
+	}
+
+	private void renderFlagRed(Graphics2D g) {
+	}
+
+	private void renderFlagGreen(Graphics2D g) {
+	}
+
+	private void renderFlagBlue(Graphics2D g) {
+	}
+
+	private void renderFlagOrange(Graphics2D g) {
 	}
 
 // ======================================================================================================================================================
@@ -165,6 +242,21 @@ public class Tile {
 		this.piece.setTile(this);
 		this.piece.setPosition(this.position.copy());
 		this.piece.setCoordinate(this.coordinate.copy());
+	}
+
+	public void highlightTile(Piece.Color color) {
+		if (this.piece == null) {
+			this.type = Tile.Type.POSSIBLE_MOVE;
+		} else {
+			this.type = Tile.Type.CAPTURE;
+		}
+	}
+
+	public void clear() {
+		if (this.type == Tile.Type.DISABLED) {
+			return;
+		}
+		this.type = Tile.Type.NORMAL;
 	}
 
 // ======================================================================================================================================================

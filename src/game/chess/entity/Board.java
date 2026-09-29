@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.awt.Graphics2D;
 
 import game.chess.Chess;
+import game.chess.entity.Tile;
+import game.chess.entity.Piece;
 import game.chess.utils.Position;
 import game.chess.utils.Rectangle;
 import game.chess.utils.BoardUtils;
@@ -79,6 +81,14 @@ public class Board {
 		}
 	}
 
+	public void renderHighlight(Graphics2D g) {
+		for (int row = 0; row < this.rowCount; row++) {
+			for (int col = 0; col < this.colCount; col++) {
+				this.tiles[row][col].renderHighlight(g);
+			}
+		}
+	}
+
 // ======================================================================================================================================================
 
 	public void disablePosition(Position pos) {
@@ -100,6 +110,22 @@ public class Board {
 		}
 		return null;
 	}
+
+	public void highlightTiles(List<Position> toHighlight, Piece.Color color) {
+		for (Position pos : toHighlight) {
+			this.tiles[pos.getRow()][pos.getCol()].highlightTile(color);
+		}
+	}
+
+	public void clearSelection() {
+		for (int row = 0; row < this.rowCount; row++) {
+			for (int col = 0; col < this.colCount; col++) {
+				this.tiles[row][col].clear();
+			}
+		}
+	}
+
+// ======================================================================================================================================================
 
 	public boolean isValidPosition(Position targetPos) {
 		try {

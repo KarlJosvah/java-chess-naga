@@ -9,6 +9,7 @@ import game.chess.entity.Tile;
 import game.chess.entity.Board;
 import game.chess.entity.Piece;
 import game.chess.layout.Layout;
+import game.chess.utils.Position;
 import game.chess.utils.ChessUtils;
 import game.chess.factory.BoardFactory;
 import game.chess.factory.LayoutFactory;
@@ -67,15 +68,35 @@ public class Chess {
 		for (Piece piece: this.pieces) {
 			piece.render(g);
 		}
+		this.board.renderHighlight(g);
 	}
 
 // ======================================================================================================================================================
 
 	public void handleLeftClick(int x, int y) {
-		Tile clickedTiles = this.board.getTileAtPixel(x, y);
-		System.out.println(clickedTiles);
+		Tile clickedTile = this.board.getTileAtPixel(x, y);
+		Piece clickedPiece = clickedTile.getPiece();
+
+		this.clearSelection();
+
+		if (clickedPiece != null) {
+			this.clickPiece(clickedPiece);
+		}
 	}
 
 	public void handleRightClick(int x, int y) {
+		Tile clickedTile = this.board.getTileAtPixel(x, y);
+		System.out.println(clickedTile);
+	}
+
+// ======================================================================================================================================================
+
+	private void clearSelection() {
+		this.board.clearSelection();
+	}
+
+	private void clickPiece(Piece clickedPiece) {
+		List<Position> validMoves = clickedPiece.getValidMoves(this.board);
+		this.board.highlightTiles(validMoves, clickedPiece.getColor());
 	}
 }

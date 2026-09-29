@@ -17,4 +17,8 @@ public class Helper {
 		int rgb = Integer.parseInt(hexColor, 16);
 		return new Color(rgb);
 	}
+
+	public static double percent(double nb, double percentage) {
+		return nb * percentage / 100;
+	}
 }
