@@ -28,8 +28,8 @@ public class LinearMoveBehavior implements MoveBehavior {
 		int currentCol = currentPosition.getCol();
 
 		for (int step = 1; step <= this.maxDistance; step++) {
-			int targetRow = currentRow + (direction.getDy() * step);
-			int targetCol = currentCol + (direction.getDx() * step);
+			int targetRow = currentRow + (direction.getDRow() * step);
+			int targetCol = currentCol + (direction.getDCol() * step);
 
 			Position targetPos = new Position(targetRow, targetCol);
 			if (!board.isValidPosition(targetPos)) {
