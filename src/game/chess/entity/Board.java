@@ -102,6 +102,11 @@ public class Board {
 // ======================================================================================================================================================
 
 	public Tile getTileAtPixel(int mouseX, int mouseY) {
+		if (mouseX < this.rect.getX() || mouseX >= this.rect.getX() + this.rect.getWidth() ||
+			mouseY < this.rect.getY() || mouseY >= this.rect.getY() + this.rect.getHeight()) {
+			return null;
+		}
+
 		int col = (int) ( (mouseX - this.rect.getX()) / this.getTileSize() );
 		int row = (int) ( (this.rect.getY() + this.rect.getHeight() - mouseY) / this.getTileSize() );
 
