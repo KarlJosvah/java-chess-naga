@@ -117,7 +117,7 @@ public class Piece {
 // ======================================================================================================================================================
 
 	public boolean isEnemyPiece(Piece anotherPiece) {
-		return this.getColor() == anotherPiece.getColor();
+		return this.getColor() != anotherPiece.getColor();
 	}
 
 	public String toString() {

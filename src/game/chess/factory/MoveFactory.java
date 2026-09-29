@@ -41,7 +41,7 @@ public class MoveFactory {
 	private static List<MoveBehavior> ofRook() {
 		Set<MoveBehavior> behaviors = new HashSet<>();
 
-		for(Direction dir : Direction.STRAIGHT_DIRS) {
+		for (Direction dir : Direction.STRAIGHT_DIRS) {
 			behaviors.add(new LinearMoveBehavior(dir, Integer.MAX_VALUE));
 		}
 

@@ -41,9 +41,8 @@ public class LinearMoveBehavior implements MoveBehavior {
 			} else {
 				if (board.isEnemyPiece(currentPosition, targetPos)) {
 					moves.add(targetPos);
-				} else {
-					break;
 				}
+				break;
 			}
 		}
 
