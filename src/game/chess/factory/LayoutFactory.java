@@ -1,7 +1,5 @@
 package game.chess.factory;
 
-import java.util.ArrayList;
-
 import game.chess.Chess;
 import game.chess.entity.Piece;
 import game.chess.layout.Layout;

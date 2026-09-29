@@ -1,5 +1,6 @@
 package game.chess.entity;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import java.awt.Graphics2D;
@@ -17,7 +18,7 @@ public class Board {
 
 	private Tile[][] tiles = null;
 	private Rectangle rect = null;
-	private ArrayList<Position> disabledPosition = new ArrayList<Position>();
+	private List<Position> disabledPosition = new ArrayList<>();
 	private int tileSize = 0;
 
 // ======================================================================================================================================================

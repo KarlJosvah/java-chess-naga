@@ -1,5 +1,6 @@
 package game.chess;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import java.awt.Graphics2D;
@@ -32,7 +33,7 @@ public class Chess {
 
 	private Board board = null;
 	private Layout layout = null;
-	private final ArrayList<Piece> pieces = new ArrayList<Piece>();
+	private final List<Piece> pieces = new ArrayList<>();
 	private Chess.Type type = Chess.Type.CLASSIC;
 
 // ======================================================================================================================================================

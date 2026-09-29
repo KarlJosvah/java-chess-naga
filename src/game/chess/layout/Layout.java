@@ -1,12 +1,13 @@
 package game.chess.layout;
 
+import java.util.List;
 import java.util.ArrayList;
 import game.chess.Chess;
 import game.chess.entity.Piece;
 
 public class Layout {
 
-	private ArrayList<LayoutEntry> entry = new ArrayList<LayoutEntry>();
+	private List<LayoutEntry> entry = new ArrayList<>();
 	private Chess.Type type = null;
 	private int rowCount = 0;
 	private int colCount = 0;
@@ -23,7 +24,7 @@ public class Layout {
 		this.entry.add(new LayoutEntry(type, color, row, col));
 	}
 
-	public ArrayList<LayoutEntry> getEntries() {
+	public List<LayoutEntry> getEntries() {
 		return this.entry;
 	}
 

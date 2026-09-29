@@ -104,14 +104,14 @@ public class Piece {
 		this.behaviors.addAll(behaviors);
 	}
 
-	public Set<Position> getValidMoves(Board board) {
+	public List<Position> getValidMoves(Board board) {
 		Set<Position> validMoves = new HashSet<>();
 
 		for (MoveBehavior behavior : this.behaviors) {
 			validMoves.addAll(behavior.getPossibleMoves(this.position, board));
 		}
 
-		return validMoves;
+		return List.copyOf(validMoves);
 	}
 
 // ======================================================================================================================================================

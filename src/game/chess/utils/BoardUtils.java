@@ -1,6 +1,6 @@
 package game.chess.utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import game.chess.Chess;
 import game.chess.entity.Tile;
@@ -49,7 +49,7 @@ public class BoardUtils {
 
 // ======================================================================================================================================================
 
-	public static void disable(Tile[][] tiles, ArrayList<Position> disabledPosition) {
+	public static void disable(Tile[][] tiles, List<Position> disabledPosition) {
 		for (Position pos : disabledPosition) {
 			tiles[pos.getRow()][pos.getCol()].disable();
 		}

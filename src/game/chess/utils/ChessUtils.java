@@ -1,6 +1,6 @@
 package game.chess.utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import game.chess.entity.Board;
 import game.chess.entity.Piece;
@@ -9,7 +9,7 @@ import game.chess.layout.LayoutEntry;
 import game.chess.factory.PieceFactory;
 
 public class ChessUtils {
-	public static void placePieces(Board board, Layout layout, ArrayList<Piece> pieces) {
+	public static void placePieces(Board board, Layout layout, List<Piece> pieces) {
 		if (! ChessUtils.layoutFitBoard(layout, board)) {
 			throw new IllegalArgumentException("Piece's layout won't fit in that board");
 		}
