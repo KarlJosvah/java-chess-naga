@@ -17,11 +17,11 @@ public class TileRenderer {
 
 // ======================================================================================================================================================
 
-	public static double POSSIBLE_MOVE_CIRCLE_RADIUS_RATE = 20.0;
-	public static double CAPTURE_CIRCLE_RADIUS_RATE = 60.0;
+	public static double POSSIBLE_MOVE_CIRCLE_RADIUS_RATE = 30.0;
+	public static double CAPTURE_CIRCLE_RADIUS_RATE = 80.0;
 	public static double CAPTURE_CIRCLE_THICHNESS_RATE = 10.0;
 
-	public static Color CIRCLE_COLOR = Helper.getColorFromHex("#4b4b4b40");
+	public static Color CIRCLE_COLOR = Helper.getColorFromHex("#4b4b4bA0");
 
 	public static final Color[] TILE_COLORS = {
 		Helper.getColorFromHex("#EBECD0"),
