@@ -24,6 +24,7 @@ public class Chess {
 		RANDOM,
 		GIANT,
 		FOUR_PLAYER,
+		TEST,
 		CUSTOM;
 	}
 
@@ -75,10 +76,13 @@ public class Chess {
 
 	public void handleLeftClick(int x, int y) {
 		Tile clickedTile = this.board.getTileAtPixel(x, y);
-		Piece clickedPiece = clickedTile.getPiece();
-
 		this.clearSelection();
 
+		if (clickedTile == null) {
+			return;
+		}
+
+		Piece clickedPiece = clickedTile.getPiece();
 		if (clickedPiece != null) {
 			this.clickPiece(clickedPiece);
 		}

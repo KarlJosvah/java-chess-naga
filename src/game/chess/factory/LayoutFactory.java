@@ -1,5 +1,9 @@
 package game.chess.factory;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import game.chess.Chess;
 import game.chess.entity.Piece;
 import game.chess.layout.Layout;
@@ -12,8 +16,12 @@ public class LayoutFactory {
 		switch (type) {
 			case CLASSIC:
 				return LayoutFactory.ofClassic();
+			case GIANT:
+				return LayoutFactory.ofGiant();
 			case FOUR_PLAYER:
 				return LayoutFactory.ofFourPlayer();
+			case TEST:
+				return LayoutFactory.ofTest();
 			default:
 				return LayoutFactory.ofClassic();
 		}
@@ -120,6 +128,78 @@ public class LayoutFactory {
 		// Pawns (Col 12)
 		for (int row = 3; row <= 10; row++) {
 			layout.addPiece(Piece.Type.PAWN, Piece.Color.BLACK, row, 12);
+		}
+
+		return layout;
+	}
+
+	private static Layout ofGiant() {
+		Layout layout = new Layout(Chess.Type.GIANT, 20, 20);
+
+		// White Pieces at the South side (Rows 0-1)
+		Piece.Type[] mainRank = {
+			Piece.Type.ROOK,	Piece.Type.KNIGHT,	Piece.Type.BISHOP,	Piece.Type.BISHOP,	Piece.Type.KNIGHT,
+			Piece.Type.ROOK,	Piece.Type.KNIGHT,	Piece.Type.BISHOP,	Piece.Type.KNIGHT,	Piece.Type.QUEEN,
+			Piece.Type.KING,	Piece.Type.KNIGHT,	Piece.Type.BISHOP,	Piece.Type.KNIGHT,	Piece.Type.ROOK,
+			Piece.Type.KNIGHT,	Piece.Type.BISHOP,	Piece.Type.BISHOP,	Piece.Type.KNIGHT,	Piece.Type.ROOK
+		};
+
+		for (int col = 0; col < 20; col++) {
+			layout.addPiece(mainRank[col], Piece.Color.WHITE, 0, col);
+			layout.addPiece(Piece.Type.PAWN, Piece.Color.WHITE, 1, col);
+		}
+
+		// Black Pieces at the North side (Rows 18-19)
+		for (int col = 0; col < 20; col++) {
+			layout.addPiece(Piece.Type.PAWN, Piece.Color.BLACK, 18, col);
+			layout.addPiece(mainRank[col], Piece.Color.BLACK, 19, col);
+		}
+
+		return layout;
+	}
+
+	private static Layout ofTest() {
+		int rowCount = 20;
+		int colCount = 20;
+		Layout layout = new Layout(Chess.Type.TEST, rowCount, colCount);
+		int nbPieceEachSide = 50;
+
+		// Build a list of all available grid positions and shuffle them
+		List<int[]> availablePositions = new ArrayList<>();
+		for (int r = 0; r < rowCount; r++) {
+			for (int c = 0; c < colCount; c++) {
+				availablePositions.add(new int[]{r, c});
+			}
+		}
+		Collections.shuffle(availablePositions);
+
+		int posIndex = 0;
+
+		// Non-king piece types available for random selection
+		Piece.Type[] nonKingTypes = {
+			Piece.Type.PAWN,
+			Piece.Type.ROOK,
+			Piece.Type.KNIGHT,
+			Piece.Type.BISHOP,
+			Piece.Type.QUEEN
+		};
+
+		for (Piece.Color color : Piece.Color.values()) {
+			// 1. Place exactly one King for this side
+			if (posIndex < availablePositions.size()) {
+				int[] pos = availablePositions.get(posIndex++);
+				layout.addPiece(Piece.Type.KING, color, pos[0], pos[1]);
+			}
+
+			// 2. Place remaining nbPieceEachSide pieces randomly across remaining types
+			for (int i = 0; i < nbPieceEachSide; i++) {
+				if (posIndex >= availablePositions.size()) {
+					break;
+				}
+				Piece.Type type = nonKingTypes[i % nonKingTypes.length];
+				int[] pos = availablePositions.get(posIndex++);
+				layout.addPiece(type, color, pos[0], pos[1]);
+			}
 		}
 
 		return layout;

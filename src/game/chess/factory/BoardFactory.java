@@ -16,6 +16,8 @@ public class BoardFactory {
 				return BoardFactory.ofGiant();
 			case FOUR_PLAYER:
 				return BoardFactory.ofFourPlayer();
+			case TEST:
+				return BoardFactory.ofTest();
 			default:
 				return BoardFactory.ofClassic();
 		}
@@ -76,6 +78,14 @@ public class BoardFactory {
 			}
 		}
 
+		return board;
+	}
+
+	private static Board ofTest() {
+		Board board = new Board();
+		board.setRowCount(20);
+		board.setColCount(20);
+		board.setMargin(10);
 		return board;
 	}
 }
