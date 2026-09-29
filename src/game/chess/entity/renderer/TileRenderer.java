@@ -9,9 +9,11 @@ import java.awt.geom.Ellipse2D;
 import tools.Helper;
 import engine.tools.AssetsLoader;
 
+import game.chess.config.Config;
 import game.chess.entity.Tile;
 import game.chess.config.Config;
 import game.chess.helper.Drawer;
+import game.chess.particle.Particle;
 
 public class TileRenderer {
 
@@ -26,6 +28,10 @@ public class TileRenderer {
 	public static final Color[] TILE_COLORS = {
 		Helper.getColorFromHex("#EBECD0"),
 		Helper.getColorFromHex("#779556")
+	};
+	public static final Color[] PARTICLE_COLORS = {
+		Helper.getColorFromHex("#E5E5E5"),
+		Helper.getColorFromHex("#404040")
 	};
 
 	public static void render(Tile tile, Graphics2D g) {
@@ -65,6 +71,7 @@ public class TileRenderer {
 			default:
 				break;
 		}
+		TileRenderer.renderKingParticles(tile, g);
 	}
 
 // ======================================================================================================================================================
@@ -78,6 +85,20 @@ public class TileRenderer {
 			tile.getSize()
 		);
 		TileRenderer.renderAnnotation(tile, g);
+	}
+
+	private static void renderKingParticles(Tile tile, Graphics2D g) {
+		if (tile.getParticles().isEmpty()) {
+			return;
+		}
+
+		double centerX = tile.getCoordinate().getX() + (tile.getSize() / 2.0);
+		double centerY = tile.getCoordinate().getY() + (tile.getSize() / 2.0);
+		double particleDiameter = Helper.percent(tile.getSize(), Config.get().getParticleRadiusRateFromTileSize());
+
+		for (Particle p : tile.getParticles()) {
+			p.render(g, centerX, centerY, particleDiameter);
+		}
 	}
 
 	private static void renderDisabled(Tile tile, Graphics2D g) {

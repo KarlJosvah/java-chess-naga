@@ -1,12 +1,17 @@
 package game.chess.entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.List;
+import java.util.ArrayList;
 
 import tools.Helper;
 
+import game.chess.config.Config;
 import game.chess.utils.Position;
 import game.chess.utils.Rectangle;
 import game.chess.utils.Coordinate;
+import game.chess.particle.Particle;
 import game.chess.entity.renderer.TileRenderer;
 
 public class Tile {
@@ -32,28 +37,14 @@ public class Tile {
 
 	private Tile.Type type = Tile.Type.NORMAL;
 	private Piece piece = null;
+	private final List<Particle> particles = new ArrayList<>();
+	private double particleSpawnTimer = 0;
 
 // ======================================================================================================================================================
 
 	public Tile(Position position, int size) {
 		this.position = position;
 		this.size = size;
-	}
-
-// ======================================================================================================================================================
-
-	public void init() {
-	}
-
-	public void tick(double elapsedSecond) {
-	}
-
-	public void render(Graphics2D g) {
-		TileRenderer.render(this, g);
-	}
-
-	public void renderHighlight(Graphics2D g) {
-		TileRenderer.renderHighlight(this, g);
 	}
 
 // ======================================================================================================================================================
@@ -107,8 +98,76 @@ public class Tile {
 		return this.piece;
 	}
 
+	public List<Particle> getParticles() {
+		return this.particles;
+	}
+
 	public boolean isEnemyPiece(Tile anotherTile) {
 		return this.getPiece().isEnemyPiece(anotherTile.getPiece());
+	}
+
+// ======================================================================================================================================================
+
+	public void init() {
+	}
+
+	public void tick(double elapsedSecond) {
+		this.tickParticles(elapsedSecond);
+	}
+
+	public void render(Graphics2D g) {
+		TileRenderer.render(this, g);
+	}
+
+	public void renderHighlight(Graphics2D g) {
+		TileRenderer.renderHighlight(this, g);
+	}
+
+// ======================================================================================================================================================
+
+	private void tickParticles(double elapsedSecond) {
+		if (Config.get().getEnableParticle() == false) {
+			return;
+		}
+		if (this.piece != null && this.piece.getType() == Piece.Type.KING) {
+			this.particleSpawnTimer += elapsedSecond;
+
+			this.spawnNewParticle();
+			this.updateParticles(elapsedSecond);
+		} else if (!this.particles.isEmpty()) {
+			this.particles.clear();
+		}
+	}
+
+	private void spawnNewParticle() {
+		if (this.particleSpawnTimer >= Config.get().getParticleSpawnDelay()) {
+			this.particleSpawnTimer = 0;
+			double angle = Math.random() * Math.PI * 2;
+			double maxDistance = this.size * Config.get().getParticleMaxDistanceFromTileSize();
+
+			Color baseColor = (this.piece.getColor() == Piece.Color.WHITE)
+				? TileRenderer.PARTICLE_COLORS[0]
+				: TileRenderer.PARTICLE_COLORS[1];
+
+			Color particleColor = new Color(
+				baseColor.getRed(),
+				baseColor.getGreen(),
+				baseColor.getBlue(),
+				Config.get().getParticleDefaultAlpha()
+			);
+
+			this.particles.add(new Particle(angle, maxDistance, particleColor));
+		}
+	}
+
+	private void updateParticles(double elapsedSecond) {
+		for (int i = this.particles.size() - 1; i >= 0; i--) {
+			Particle p = this.particles.get(i);
+			p.tick(elapsedSecond);
+			if (p.isDead()) {
+				this.particles.remove(i);
+			}
+		}
 	}
 
 // ======================================================================================================================================================

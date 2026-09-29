@@ -9,6 +9,12 @@ public final class Config {
 	private volatile Config.TileAnnotation tileAnnotation = Config.TileAnnotation.BORDER;
 	private volatile Config.WindowMode windowMode = Config.WindowMode.FULLSCREEN;
 
+	private volatile boolean enableParticle = true;
+	private volatile double particleRadiusRateFromTileSize = 15.0;
+	private volatile double particleSpawnDelay = 0.2;
+	private volatile double particleMaxDistanceFromTileSize = 0.75;
+	private volatile int particleDefaultAlpha = 100;
+
 // ======================================================================================================================================================
 
 	public enum TileAnnotation {
@@ -43,6 +49,33 @@ public final class Config {
 		return this;
 	}
 
+	public synchronized Config setEnableParticle(boolean enable) {
+		this.enableParticle = enable;
+		return this;
+	}
+
+	public synchronized Config setParticleRadiusRateFromTileSize(double radiusRate) {
+		this.particleRadiusRateFromTileSize = Math.max(0.0, Math.min(100.0, radiusRate));
+		return this;
+	}
+
+	public synchronized Config setParticleSpawnDelay(double delay) {
+		this.particleSpawnDelay = Math.max(0.0, Math.min(1.0, delay));
+		return this;
+	}
+
+	public synchronized Config setParticleMaxDistanceFromTileSize(double coeff) {
+		this.particleMaxDistanceFromTileSize = Math.max(0.0, coeff);
+		return this;
+	}
+
+	public synchronized Config setParticleDefaultAlpha(int alpha) {
+		this.particleDefaultAlpha = Math.max(0, Math.min(255, alpha));
+		return this;
+	}
+
+// ======================================================================================================================================================
+
 	public Config.TileAnnotation getTileAnnotation() {
 		return this.tileAnnotation;
 	}
@@ -51,15 +84,47 @@ public final class Config {
 		return this.windowMode;
 	}
 
+	public boolean getEnableParticle() {
+		return this.enableParticle;
+	}
+
+	public double getParticleRadiusRateFromTileSize() {
+		return this.particleRadiusRateFromTileSize;
+	}
+
+	public double getParticleSpawnDelay() {
+		return this.particleSpawnDelay;
+	}
+
+	public double getParticleMaxDistanceFromTileSize() {
+		return this.particleMaxDistanceFromTileSize;
+	}
+
+	public int getParticleDefaultAlpha() {
+		return this.particleDefaultAlpha;
+	}
+
 // ======================================================================================================================================================
 
 	public synchronized void defaultConfig() {
 		this.setTileAnnotation(Config.TileAnnotation.BORDER)
-			.setWindowMode(Config.WindowMode.FULLSCREEN);
+			.setWindowMode(Config.WindowMode.FULLSCREEN)
+			.setEnableParticle(true)
+			.setParticleRadiusRateFromTileSize(15.0)
+			.setParticleSpawnDelay(0.2)
+			.setParticleMaxDistanceFromTileSize(0.75)
+			.setParticleDefaultAlpha(100)
+		;
 	}
 
 	public synchronized void testConfig() {
 		this.setTileAnnotation(Config.TileAnnotation.ALL)
-			.setWindowMode(Config.WindowMode.BORDERLESS);
+			.setWindowMode(Config.WindowMode.BORDERLESS)
+			.setEnableParticle(true)
+			.setParticleRadiusRateFromTileSize(25.0)
+			.setParticleSpawnDelay(0.08)
+			.setParticleMaxDistanceFromTileSize(1.5)
+			.setParticleDefaultAlpha(200)
+		;
 	}
 }
