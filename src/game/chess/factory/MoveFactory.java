@@ -9,15 +9,20 @@ import game.chess.movement.Direction;
 import game.chess.movement.MoveBehavior;
 import game.chess.movement.LeapMoveBehavior;
 import game.chess.movement.LinearMoveBehavior;
+import game.chess.movement.Orientation;
 
 public class MoveFactory {
 
 // ======================================================================================================================================================
 
 	public static List<MoveBehavior> of(Piece.Type type) {
+		return MoveFactory.of(type, Piece.Color.WHITE);
+	}
+
+	public static List<MoveBehavior> of(Piece.Type type, Piece.Color color) {
 		switch (type) {
 			case PAWN:
-				return MoveFactory.ofPawn();
+				return MoveFactory.ofPawn(color);
 			case ROOK:
 				return MoveFactory.ofRook();
 			case KNIGHT:
@@ -29,12 +34,18 @@ public class MoveFactory {
 			case KING:
 				return MoveFactory.ofKing();
 			default:
-				return MoveFactory.ofPawn();
+				return MoveFactory.ofPawn(color);
 		}
 	}
 
-	private static List<MoveBehavior> ofPawn() {
+	private static List<MoveBehavior> ofPawn(Piece.Color color) {
 		Set<MoveBehavior> behaviors = new HashSet<>();
+
+		Orientation orientation = color == Piece.Color.WHITE
+			? Orientation.NORTH
+			: Orientation.SOUTH;
+		behaviors.add(new LinearMoveBehavior(Direction.NORTH, 1, orientation));
+
 		return List.copyOf(behaviors);
 	}
 

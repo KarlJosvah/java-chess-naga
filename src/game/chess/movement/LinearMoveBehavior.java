@@ -8,10 +8,16 @@ import game.chess.utils.Position;
 public class LinearMoveBehavior implements MoveBehavior {
 	private final Direction direction;
 	private final int maxDistance; // [ 1 ; Integer.MAX_VALUE ]
+	private final Orientation orientation;
 
 	public LinearMoveBehavior(Direction direction, int maxDistance) {
+		this(direction, maxDistance, Orientation.NORTH);
+	}
+
+	public LinearMoveBehavior(Direction direction, int maxDistance, Orientation orientation) {
 		this.direction = direction;
 		this.maxDistance = LinearMoveBehavior.validateMaxDistance(maxDistance);
+		this.orientation = orientation;
 	}
 
 	private static int validateMaxDistance(int maxDistance) {
@@ -27,9 +33,11 @@ public class LinearMoveBehavior implements MoveBehavior {
 		int currentRow = currentPosition.getRow();
 		int currentCol = currentPosition.getCol();
 
+		Direction adjustedDirection = this.orientation.apply(this.direction);
+
 		for (int step = 1; step <= this.maxDistance; step++) {
-			int targetRow = currentRow + (direction.getDRow() * step);
-			int targetCol = currentCol + (direction.getDCol() * step);
+			int targetRow = currentRow + (adjustedDirection.getDRow() * step);
+			int targetCol = currentCol + (adjustedDirection.getDCol() * step);
 
 			Position targetPos = new Position(targetRow, targetCol);
 			if (!board.isValidPosition(targetPos)) {

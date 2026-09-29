@@ -32,7 +32,7 @@ public class PieceFactory {
 	private static Piece ofPawn(Piece.Color color, float tileSize) {
 		Piece pawn = new Piece(Piece.Type.PAWN, color);
 		pawn.setSprite(SVGLoader.loadPieceSvg(color == Piece.Color.BLACK ? "pb.svg" : "pw.svg", tileSize, tileSize));
-		pawn.addAllBehaviors(MoveFactory.of(Piece.Type.PAWN));
+		pawn.addAllBehaviors(MoveFactory.of(Piece.Type.PAWN, color));
 		return pawn;
 	}
 
