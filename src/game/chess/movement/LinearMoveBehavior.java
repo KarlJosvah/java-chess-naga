@@ -13,6 +13,7 @@ public class LinearMoveBehavior implements MoveBehavior {
 	private final int maxDistance; // [ 1 ; Integer.MAX_VALUE ]
 	private final Orientation orientation;
 	private final boolean hasToBeEmpty;
+	private final boolean hasToBeEnemy;
 
 // ======================================================================================================================================================
 
@@ -21,6 +22,7 @@ public class LinearMoveBehavior implements MoveBehavior {
 		this.maxDistance = builder.maxDistance;
 		this.orientation = builder.orientation;
 		this.hasToBeEmpty = builder.hasToBeEmpty;
+		this.hasToBeEnemy = builder.hasToBeEnemy;
 	}
 
 // ======================================================================================================================================================
@@ -33,6 +35,7 @@ public class LinearMoveBehavior implements MoveBehavior {
 
 		Direction adjustedDirection = this.orientation.apply(this.direction);
 
+
 		for (int step = 1; step <= this.maxDistance; step++) {
 			int targetRow = currentRow + (adjustedDirection.getDRow() * step);
 			int targetCol = currentCol + (adjustedDirection.getDCol() * step);
@@ -43,9 +46,11 @@ public class LinearMoveBehavior implements MoveBehavior {
 			}
 
 			if (board.isEmpty(targetPos)) {
-				moves.add(targetPos);
+				if (!this.hasToBeEnemy) {
+					moves.add(targetPos);
+				}
 			} else {
-				if (board.isEnemyPiece(currentPosition, targetPos) && this.hasToBeEmpty == false) {
+				if (!this.hasToBeEmpty && board.isEnemyPiece(currentPosition, targetPos)) {
 					moves.add(targetPos);
 				}
 				break;
@@ -62,6 +67,7 @@ public class LinearMoveBehavior implements MoveBehavior {
 		private final int maxDistance;
 		private Orientation orientation = Orientation.NORTH;
 		private boolean hasToBeEmpty = false;
+		private boolean hasToBeEnemy = false;
 
 		public Builder(Direction direction, int maxDistance) {
 			this.direction = direction;
@@ -82,6 +88,17 @@ public class LinearMoveBehavior implements MoveBehavior {
 
 		public Builder hasToBeEmpty(boolean hasToBeEmpty) {
 			this.hasToBeEmpty = hasToBeEmpty;
+			if (this.hasToBeEmpty) {
+				this.hasToBeEnemy = false;
+			}
+			return this;
+		}
+
+		public Builder hasToBeEnemy(boolean hasToBeEnemy) {
+			this.hasToBeEnemy = hasToBeEnemy;
+			if (this.hasToBeEnemy) {
+				this.hasToBeEmpty = false;
+			}
 			return this;
 		}
 

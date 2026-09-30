@@ -44,10 +44,23 @@ public class MoveFactory {
 		Orientation orientation = color == Piece.Color.WHITE
 			? Orientation.NORTH
 			: Orientation.SOUTH;
+
 		behaviors.add(
 			new LinearMoveBehavior.Builder(Direction.NORTH, 1)
 				.orientation(orientation)
 				.hasToBeEmpty(true)
+				.build()
+		);
+		behaviors.add(
+			new LinearMoveBehavior.Builder(Direction.NORTH_EAST, 1)
+				.orientation(orientation)
+				.hasToBeEnemy(true)
+				.build()
+		);
+		behaviors.add(
+			new LinearMoveBehavior.Builder(Direction.NORTH_WEST, 1)
+				.orientation(orientation)
+				.hasToBeEnemy(true)
 				.build()
 		);
 
