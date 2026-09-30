@@ -162,7 +162,7 @@ public class LayoutFactory {
 		int rowCount = 20;
 		int colCount = 20;
 		Layout layout = new Layout(Chess.Type.TEST, rowCount, colCount);
-		int nbPieceEachSide = 50;
+		int nbPieceEachSide = 100;
 
 		// Build a list of all available grid positions and shuffle them
 		List<int[]> availablePositions = new ArrayList<>();

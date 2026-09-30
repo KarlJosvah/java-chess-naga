@@ -44,7 +44,12 @@ public class MoveFactory {
 		Orientation orientation = color == Piece.Color.WHITE
 			? Orientation.NORTH
 			: Orientation.SOUTH;
-		behaviors.add(new LinearMoveBehavior(Direction.NORTH, 1, orientation));
+		behaviors.add(
+			new LinearMoveBehavior.Builder(Direction.NORTH, 1)
+				.orientation(orientation)
+				.hasToBeEmpty(true)
+				.build()
+		);
 
 		return List.copyOf(behaviors);
 	}
@@ -53,7 +58,7 @@ public class MoveFactory {
 		Set<MoveBehavior> behaviors = new HashSet<>();
 
 		for (Direction dir : Direction.STRAIGHT_DIRS) {
-			behaviors.add(new LinearMoveBehavior(dir, Integer.MAX_VALUE));
+			behaviors.add(new LinearMoveBehavior.Builder(dir, Integer.MAX_VALUE).build());
 		}
 
 		return List.copyOf(behaviors);
@@ -77,7 +82,7 @@ public class MoveFactory {
 		Set<MoveBehavior> behaviors = new HashSet<>();
 
 		for (Direction dir : Direction.DIAGONAL_DIRS) {
-			behaviors.add(new LinearMoveBehavior(dir, Integer.MAX_VALUE));
+			behaviors.add(new LinearMoveBehavior.Builder(dir, Integer.MAX_VALUE).build());
 		}
 
 		return List.copyOf(behaviors);
@@ -96,11 +101,11 @@ public class MoveFactory {
 		Set<MoveBehavior> behaviors = new HashSet<>();
 
 		for (Direction dir : Direction.STRAIGHT_DIRS) {
-			behaviors.add(new LinearMoveBehavior(dir, 1));
+			behaviors.add(new LinearMoveBehavior.Builder(dir, 1).build());
 		}
 
 		for (Direction dir : Direction.DIAGONAL_DIRS) {
-			behaviors.add(new LinearMoveBehavior(dir, 1));
+			behaviors.add(new LinearMoveBehavior.Builder(dir, 1).build());
 		}
 
 		return List.copyOf(behaviors);

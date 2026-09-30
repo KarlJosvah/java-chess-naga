@@ -6,26 +6,24 @@ import game.chess.entity.Board;
 import game.chess.utils.Position;
 
 public class LinearMoveBehavior implements MoveBehavior {
+
+// ======================================================================================================================================================
+
 	private final Direction direction;
 	private final int maxDistance; // [ 1 ; Integer.MAX_VALUE ]
 	private final Orientation orientation;
+	private final boolean hasToBeEmpty;
 
-	public LinearMoveBehavior(Direction direction, int maxDistance) {
-		this(direction, maxDistance, Orientation.NORTH);
+// ======================================================================================================================================================
+
+	private LinearMoveBehavior(Builder builder) {
+		this.direction = builder.direction;
+		this.maxDistance = builder.maxDistance;
+		this.orientation = builder.orientation;
+		this.hasToBeEmpty = builder.hasToBeEmpty;
 	}
 
-	public LinearMoveBehavior(Direction direction, int maxDistance, Orientation orientation) {
-		this.direction = direction;
-		this.maxDistance = LinearMoveBehavior.validateMaxDistance(maxDistance);
-		this.orientation = orientation;
-	}
-
-	private static int validateMaxDistance(int maxDistance) {
-		if (maxDistance < 1) {
-			throw new IllegalArgumentException("Linear Move max distance have to be equal or higher than 1.");
-		}
-		return maxDistance;
-	}
+// ======================================================================================================================================================
 
 	@Override
 	public Set<Position> getPossibleMoves(Position currentPosition, Board board) {
@@ -47,7 +45,7 @@ public class LinearMoveBehavior implements MoveBehavior {
 			if (board.isEmpty(targetPos)) {
 				moves.add(targetPos);
 			} else {
-				if (board.isEnemyPiece(currentPosition, targetPos)) {
+				if (board.isEnemyPiece(currentPosition, targetPos) && this.hasToBeEmpty == false) {
 					moves.add(targetPos);
 				}
 				break;
@@ -55,5 +53,40 @@ public class LinearMoveBehavior implements MoveBehavior {
 		}
 
 		return moves;
+	}
+
+// ======================================================================================================================================================
+
+	public static class Builder {
+		private final Direction direction;
+		private final int maxDistance;
+		private Orientation orientation = Orientation.NORTH;
+		private boolean hasToBeEmpty = false;
+
+		public Builder(Direction direction, int maxDistance) {
+			this.direction = direction;
+			this.maxDistance = Builder.validateMaxDistance(maxDistance);
+		}
+
+		private static int validateMaxDistance(int maxDistance) {
+			if (maxDistance < 1) {
+				throw new IllegalArgumentException("Linear Move max distance have to be equal or higher than 1.");
+			}
+			return maxDistance;
+		}
+
+		public Builder orientation(Orientation orientation) {
+			this.orientation = orientation;
+			return this;
+		}
+
+		public Builder hasToBeEmpty(boolean hasToBeEmpty) {
+			this.hasToBeEmpty = hasToBeEmpty;
+			return this;
+		}
+
+		public LinearMoveBehavior build() {
+			return new LinearMoveBehavior(this);
+		}
 	}
 }
