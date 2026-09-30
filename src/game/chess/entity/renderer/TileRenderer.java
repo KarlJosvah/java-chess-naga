@@ -30,8 +30,8 @@ public class TileRenderer {
 		Helper.getColorFromHex("#779556")
 	};
 	public static final Color[] PARTICLE_COLORS = {
-		Helper.getColorFromHex("#E5E5E5"),
-		Helper.getColorFromHex("#404040")
+		Helper.getColorFromHex("#404040"),
+		Helper.getColorFromHex("#E5E5E5")
 	};
 
 	public static void render(Tile tile, Graphics2D g) {
