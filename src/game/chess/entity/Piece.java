@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import game.chess.entity.Tile;
 import game.chess.entity.Board;
+import game.chess.config.Config;
 import game.chess.utils.Position;
 import game.chess.utils.Coordinate;
 import game.chess.movement.MoveBehavior;
@@ -60,12 +61,46 @@ public class Piece {
 	}
 
 	public void render(Graphics2D g) {
+		int px = this.coordinate.getX();
+		int py = this.coordinate.getY();
+
+		this.renderWhiteOffset(g, px, py);
 		g.drawImage(
 			this.sprite,
-			this.coordinate.getX(),
-			this.coordinate.getY(),
+			px,
+			py,
 			null
 		);
+	}
+
+// ======================================================================================================================================================
+
+	private void renderWhiteOffset(Graphics2D g, int px, int py) {
+		if (this.color == Piece.Color.WHITE && Config.get().getWhitePieceBorder() == Config.WhitePieceBorder.RENDER_OFFSET) {
+			
+			// 8-way offset rendering using dark tinted image
+			Graphics2D g2d = (Graphics2D) g.create();
+			try {
+				BufferedImage shadow = new BufferedImage(this.sprite.getWidth(), this.sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+				Graphics2D sg = shadow.createGraphics();
+				sg.drawImage(this.sprite, 0, 0, null);
+				sg.setComposite(java.awt.AlphaComposite.SrcIn);
+				sg.setColor(new java.awt.Color(20, 20, 20, 220));
+				sg.fillRect(0, 0, shadow.getWidth(), shadow.getHeight());
+				sg.dispose();
+
+				g2d.drawImage(shadow, px - 1, py, null);
+				g2d.drawImage(shadow, px + 1, py, null);
+				g2d.drawImage(shadow, px, py - 1, null);
+				g2d.drawImage(shadow, px, py + 1, null);
+				g2d.drawImage(shadow, px - 1, py - 1, null);
+				g2d.drawImage(shadow, px + 1, py - 1, null);
+				g2d.drawImage(shadow, px - 1, py + 1, null);
+				g2d.drawImage(shadow, px + 1, py + 1, null);
+			} finally {
+				g2d.dispose();
+			}
+		}
 	}
 
 // ======================================================================================================================================================

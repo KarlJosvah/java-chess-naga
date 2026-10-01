@@ -8,6 +8,7 @@ public final class Config {
 
 	private volatile Config.TileAnnotation tileAnnotation = Config.TileAnnotation.BORDER;
 	private volatile Config.WindowMode windowMode = Config.WindowMode.FULLSCREEN;
+	private volatile Config.WhitePieceBorder whitePieceBorder = Config.WhitePieceBorder.RENDER_OFFSET;
 
 	private volatile boolean enableParticle = false;
 	private volatile double particleRadiusRateFromTileSize = 15.0;
@@ -28,6 +29,11 @@ public final class Config {
 		BORDERLESS
 	}
 
+	public enum WhitePieceBorder {
+		RENDER_OFFSET,
+		SVG_DOM_STROKE
+	}
+
 // ======================================================================================================================================================
 
 	private Config() {
@@ -46,6 +52,11 @@ public final class Config {
 
 	public synchronized Config setWindowMode(Config.WindowMode windowMode) {
 		this.windowMode = windowMode;
+		return this;
+	}
+
+	public synchronized Config setWhitePieceBorder(Config.WhitePieceBorder whitePieceBorder) {
+		this.whitePieceBorder = whitePieceBorder;
 		return this;
 	}
 
@@ -84,6 +95,10 @@ public final class Config {
 		return this.windowMode;
 	}
 
+	public Config.WhitePieceBorder getWhitePieceBorder() {
+		return this.whitePieceBorder;
+	}
+
 	public boolean getEnableParticle() {
 		return this.enableParticle;
 	}
@@ -115,6 +130,7 @@ public final class Config {
 	public synchronized void defaultConfig() {
 		this.setTileAnnotation(Config.TileAnnotation.BORDER)
 			.setWindowMode(Config.WindowMode.FULLSCREEN)
+			.setWhitePieceBorder(Config.WhitePieceBorder.RENDER_OFFSET)
 			.setEnableParticle(false)
 			.setParticleRadiusRateFromTileSize(15.0)
 			.setParticleSpawnDelay(0.2)
@@ -126,6 +142,7 @@ public final class Config {
 	public synchronized void testConfig() {
 		this.setTileAnnotation(Config.TileAnnotation.ALL)
 			.setWindowMode(Config.WindowMode.BORDERLESS)
+			.setWhitePieceBorder(Config.WhitePieceBorder.SVG_DOM_STROKE)
 			.setEnableParticle(true)
 			.setParticleRadiusRateFromTileSize(25.0)
 			.setParticleSpawnDelay(0.08)
