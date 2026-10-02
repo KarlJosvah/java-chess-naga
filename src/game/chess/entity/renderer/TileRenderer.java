@@ -33,6 +33,7 @@ public class TileRenderer {
 		Helper.getColorFromHex("#404040"),
 		Helper.getColorFromHex("#E5E5E5")
 	};
+	public static final Color SELECTED_TILE_COLOR = Helper.getColorFromHex("#b9ca43");
 
 	public static void render(Tile tile, Graphics2D g) {
 		switch (tile.getType()) {
@@ -42,6 +43,9 @@ public class TileRenderer {
 			case DISABLED:
 				TileRenderer.renderDisabled(tile, g);
 				break;
+			case SELECTED:
+				TileRenderer.renderSelected(tile, g);
+				break;
 			default:
 				TileRenderer.renderNormal(tile, g);
 				break;
@@ -49,6 +53,9 @@ public class TileRenderer {
 	}
 
 	public static void renderHighlight(Tile tile, Graphics2D g) {
+		if (tile.getType() == Tile.Type.DISABLED) {
+			return;
+		}
 		switch (tile.getType()) {
 			case POSSIBLE_MOVE:
 				TileRenderer.renderPossibleMove(tile, g);
@@ -71,6 +78,7 @@ public class TileRenderer {
 			default:
 				break;
 		}
+		TileRenderer.renderAnnotation(tile, g);
 		TileRenderer.renderKingParticles(tile, g);
 	}
 
@@ -84,7 +92,6 @@ public class TileRenderer {
 			tile.getSize(),
 			tile.getSize()
 		);
-		TileRenderer.renderAnnotation(tile, g);
 	}
 
 	private static void renderKingParticles(Tile tile, Graphics2D g) {
@@ -104,6 +111,18 @@ public class TileRenderer {
 	private static void renderDisabled(Tile tile, Graphics2D g) {
 		// Do not render
 	}
+
+	private static void renderSelected(Tile tile, Graphics2D g) {
+		g.setColor(TileRenderer.SELECTED_TILE_COLOR);
+		g.fillRect(
+			tile.getCoordinate().getX(),
+			tile.getCoordinate().getY(),
+			tile.getSize(),
+			tile.getSize()
+		);
+	}
+
+// ======================================================================================================================================================
 
 	private static void renderPossibleMove(Tile tile, Graphics2D g) {
 		int radius = (int) Helper.percent(tile.getSize(), TileRenderer.POSSIBLE_MOVE_CIRCLE_RADIUS_RATE);

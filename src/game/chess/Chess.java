@@ -82,8 +82,10 @@ public class Chess {
 			return;
 		}
 
+
 		Piece clickedPiece = clickedTile.getPiece();
 		if (clickedPiece != null) {
+			clickedTile.select();
 			this.clickPiece(clickedPiece);
 		}
 	}

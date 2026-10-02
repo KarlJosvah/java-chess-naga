@@ -19,6 +19,7 @@ public class Tile {
 	public enum Type {
 		NORMAL,
 		DISABLED,
+		SELECTED,
 		POSSIBLE_MOVE,
 		CAPTURE,
 		FLAG_RED,
@@ -210,6 +211,13 @@ public class Tile {
 		} else {
 			this.type = Tile.Type.CAPTURE;
 		}
+	}
+
+	public void select() {
+		if (this.getType() == Tile.Type.DISABLED) {
+			return;
+		}
+		this.type = Tile.Type.SELECTED;
 	}
 
 	public void clear() {
