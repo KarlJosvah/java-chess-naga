@@ -101,6 +101,6 @@ public class Chess {
 
 	private void clickPiece(Piece clickedPiece) {
 		List<Position> validMoves = clickedPiece.getValidMoves(this.board);
-		this.board.highlightTiles(validMoves, clickedPiece.getColor());
+		this.board.highlightTiles(validMoves);
 	}
 }

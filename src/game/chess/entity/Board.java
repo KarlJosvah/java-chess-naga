@@ -116,9 +116,9 @@ public class Board {
 		return null;
 	}
 
-	public void highlightTiles(List<Position> toHighlight, Piece.Color color) {
+	public void highlightTiles(List<Position> toHighlight) {
 		for (Position pos : toHighlight) {
-			this.tiles[pos.getRow()][pos.getCol()].highlightTile(color);
+			this.tiles[pos.getRow()][pos.getCol()].highlightTile();
 		}
 	}
 

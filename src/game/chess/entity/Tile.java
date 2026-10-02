@@ -204,7 +204,7 @@ public class Tile {
 		this.piece.setCoordinate(this.coordinate.copy());
 	}
 
-	public void highlightTile(Piece.Color color) {
+	public void highlightTile() {
 		if (this.piece == null) {
 			this.type = Tile.Type.POSSIBLE_MOVE;
 		} else {
