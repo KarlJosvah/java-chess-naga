@@ -38,6 +38,8 @@ public class Chess {
 	private final List<Piece> pieces = new ArrayList<>();
 	private Chess.Type type = Chess.Type.CLASSIC;
 
+	private Piece selectedPiece = null;
+
 // ======================================================================================================================================================
 
 	public Chess() {
@@ -75,16 +77,23 @@ public class Chess {
 // ======================================================================================================================================================
 
 	public void handleLeftClick(int x, int y) {
+		try {
+			this.handleLeftClick_(x, y);
+		} catch (NullPointerException e) {
+			this.clearSelection();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void handleLeftClick_(int x, int y) {
 		Tile clickedTile = this.board.getTileAtPixel(x, y);
+		Piece clickedPiece = clickedTile.getPiece();
 		this.clearSelection();
 
-		if (clickedTile == null) {
-			return;
-		}
-
-
-		Piece clickedPiece = clickedTile.getPiece();
-		if (clickedPiece != null) {
+		if (this.selectedPiece.isEnemyPiece(clickedPiece)) {
+			this.capturePiece(this.selectedPiece, clickedPiece);
+		} else {
 			clickedTile.select();
 			this.clickPiece(clickedPiece);
 		}
@@ -99,10 +108,15 @@ public class Chess {
 
 	private void clearSelection() {
 		this.board.clearSelection();
+		this.selectedPiece = null;
 	}
 
 	private void clickPiece(Piece clickedPiece) {
-		List<Position> validMoves = clickedPiece.getValidMoves(this.board);
+		this.selectedPiece = clickPiece;
+		List<Position> validMoves = this.selectedPiece.getValidMoves(this.board);
 		this.board.highlightTiles(validMoves);
+	}
+
+	private void capturePiece(Piece attacker, Piece target) {
 	}
 }
