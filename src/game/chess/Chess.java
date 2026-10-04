@@ -59,10 +59,67 @@ public class Chess {
 		ChessUtils.placePieces(this.board, this.layout, this.pieces);
 	}
 
+	private boolean isAnimating = false;
+	private Piece attackerPiece = null;
+	private Piece targetPiece = null;
+	private Tile sourceTile = null;
+	private Tile targetTile = null;
+	private double animTimer = 0.0;
+	private int animStage = 0; // 0: None, 1: Move attacker, 2: Rotate target
+	private int startX, startY, targetX, targetY;
+	private static final double MOVE_DURATION = 0.35; // Seconds
+	private static final double ROTATE_DURATION = 0.30; // Seconds
+
+// ======================================================================================================================================================
+
 	public void tick(double elapsedSecond, long loopID) {
 		this.board.tick(elapsedSecond);
 		for (Piece piece: this.pieces) {
 			piece.tick(elapsedSecond);
+		}
+		this.tickCaptureAnimation(elapsedSecond);
+	}
+
+	private void tickCaptureAnimation(double elapsedSecond) {
+		if (!this.isAnimating) {
+			return;
+		}
+
+		this.animTimer += elapsedSecond;
+
+		if (this.animStage == 1) {
+			// Stage 1: Move attacker piece straight line to target piece coordinate
+			double progress = Math.min(1.0, this.animTimer / MOVE_DURATION);
+			int curX = (int) (this.startX + (this.targetX - this.startX) * progress);
+			int curY = (int) (this.startY + (this.targetY - this.startY) * progress);
+			this.attackerPiece.setCoordinate(new game.chess.utils.Coordinate(curX, curY));
+
+			if (progress >= 1.0) {
+				this.animStage = 2;
+				this.animTimer = 0.0;
+			}
+		} else if (this.animStage == 2) {
+			// Stage 2: Target piece falls (rotate 90 degrees clockwise)
+			double progress = Math.min(1.0, this.animTimer / ROTATE_DURATION);
+			double radians = Math.toRadians(90.0 * progress);
+			this.targetPiece.setRenderRotation(radians);
+
+			if (progress >= 1.0) {
+				// Animation finished: Swap target tile piece to attacker, free target piece
+				if (this.sourceTile != null) {
+					this.sourceTile.clearPiece();
+				}
+				this.targetTile.place(this.attackerPiece);
+				this.pieces.remove(this.targetPiece);
+
+				// Reset animation state and re-enable inputs
+				this.attackerPiece = null;
+				this.targetPiece = null;
+				this.sourceTile = null;
+				this.targetTile = null;
+				this.animStage = 0;
+				this.isAnimating = false;
+			}
 		}
 	}
 
@@ -77,6 +134,9 @@ public class Chess {
 // ======================================================================================================================================================
 
 	public void handleLeftClick(int x, int y) {
+		if (this.isAnimating) {
+			return;
+		}
 		try {
 			this.handleLeftClick_(x, y);
 		} catch (NullPointerException e) {
@@ -89,17 +149,24 @@ public class Chess {
 	private void handleLeftClick_(int x, int y) {
 		Tile clickedTile = this.board.getTileAtPixel(x, y);
 		Piece clickedPiece = clickedTile.getPiece();
-		this.clearSelection();
 
-		if (this.selectedPiece.isEnemyPiece(clickedPiece)) {
-			this.capturePiece(this.selectedPiece, clickedPiece);
+		if (this.selectedPiece != null && clickedPiece != null && this.selectedPiece.isEnemyPiece(clickedPiece)) {
+			Tile attackerTile = this.selectedPiece.getTile();
+			this.clearSelection();
+			this.capturePiece(attackerTile, clickedTile);
 		} else {
-			clickedTile.select();
-			this.clickPiece(clickedPiece);
+			this.clearSelection();
+			if (clickedPiece != null) {
+				clickedTile.select();
+				this.clickPiece(clickedPiece);
+			}
 		}
 	}
 
 	public void handleRightClick(int x, int y) {
+		if (this.isAnimating) {
+			return;
+		}
 		Tile clickedTile = this.board.getTileAtPixel(x, y);
 		System.out.println(clickedTile);
 	}
@@ -112,11 +179,23 @@ public class Chess {
 	}
 
 	private void clickPiece(Piece clickedPiece) {
-		this.selectedPiece = clickPiece;
+		this.selectedPiece = clickedPiece;
 		List<Position> validMoves = this.selectedPiece.getValidMoves(this.board);
 		this.board.highlightTiles(validMoves);
 	}
 
-	private void capturePiece(Piece attacker, Piece target) {
+	private void capturePiece(Tile sourceTile, Tile targetTile) {
+		this.isAnimating = true;
+		this.animStage = 1;
+		this.animTimer = 0.0;
+		this.sourceTile = sourceTile;
+		this.targetTile = targetTile;
+		this.attackerPiece = sourceTile.getPiece();
+		this.targetPiece = targetTile.getPiece();
+
+		this.startX = this.attackerPiece.getCoordinate().getX();
+		this.startY = this.attackerPiece.getCoordinate().getY();
+		this.targetX = targetTile.getCoordinate().getX();
+		this.targetY = targetTile.getCoordinate().getY();
 	}
 }

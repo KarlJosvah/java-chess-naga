@@ -52,6 +52,8 @@ public class Piece {
 		this.behaviors = new ArrayList<>();
 	}
 
+	private double renderRotation = 0.0; // In radians
+
 // ======================================================================================================================================================
 
 	public void init() {
@@ -60,17 +62,39 @@ public class Piece {
 	public void tick(double elapsedSecond) {
 	}
 
+	public void setRenderRotation(double radians) {
+		this.renderRotation = radians;
+	}
+
+	public double getRenderRotation() {
+		return this.renderRotation;
+	}
+
 	public void render(Graphics2D g) {
 		int px = this.coordinate.getX();
 		int py = this.coordinate.getY();
 
-		this.renderWhiteOffset(g, px, py);
-		g.drawImage(
-			this.sprite,
-			px,
-			py,
-			null
-		);
+		if (this.renderRotation != 0.0) {
+			Graphics2D g2d = (Graphics2D) g.create();
+			try {
+				int cx = px + (this.sprite.getWidth() / 2);
+				int cy = py + (this.sprite.getHeight() / 2);
+				g2d.rotate(this.renderRotation, cx, cy);
+
+				this.renderWhiteOffset(g2d, px, py);
+				g2d.drawImage(this.sprite, px, py, null);
+			} finally {
+				g2d.dispose();
+			}
+		} else {
+			this.renderWhiteOffset(g, px, py);
+			g.drawImage(
+				this.sprite,
+				px,
+				py,
+				null
+			);
+		}
 	}
 
 // ======================================================================================================================================================
@@ -119,6 +143,14 @@ public class Piece {
 
 	public void setSprite(BufferedImage sprite) {
 		this.sprite = sprite;
+	}
+
+	public Coordinate getCoordinate() {
+		return this.coordinate;
+	}
+
+	public Tile getTile() {
+		return this.tile;
 	}
 
 	public Piece.Type getType() {
