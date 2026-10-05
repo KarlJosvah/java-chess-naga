@@ -95,8 +95,22 @@ public class Chess {
 			this.attackerPiece.setCoordinate(new game.chess.utils.Coordinate(curX, curY));
 
 			if (progress >= 1.0) {
-				this.animStage = 2;
-				this.animTimer = 0.0;
+				if (this.targetPiece != null) {
+					this.animStage = 2;
+					this.animTimer = 0.0;
+				} else {
+					// Non-capture move completed
+					if (this.sourceTile != null) {
+						this.sourceTile.clearPiece();
+					}
+					this.targetTile.place(this.attackerPiece);
+
+					this.attackerPiece = null;
+					this.sourceTile = null;
+					this.targetTile = null;
+					this.animStage = 0;
+					this.isAnimating = false;
+				}
 			}
 		} else if (this.animStage == 2) {
 			// Stage 2: Target piece falls (rotate 90 degrees clockwise)
@@ -148,18 +162,31 @@ public class Chess {
 
 	private void handleLeftClick_(int x, int y) {
 		Tile clickedTile = this.board.getTileAtPixel(x, y);
+		if (clickedTile == null) {
+			this.clearSelection();
+			return;
+		}
+
 		Piece clickedPiece = clickedTile.getPiece();
 
-		if (this.selectedPiece != null && clickedPiece != null && this.selectedPiece.isEnemyPiece(clickedPiece)) {
-			Tile attackerTile = this.selectedPiece.getTile();
-			this.clearSelection();
-			this.capturePiece(attackerTile, clickedTile);
-		} else {
-			this.clearSelection();
-			if (clickedPiece != null) {
-				clickedTile.select();
-				this.clickPiece(clickedPiece);
+		if (this.selectedPiece != null) {
+			if (clickedTile.getType() == Tile.Type.POSSIBLE_MOVE) {
+				Tile sourceTile = this.selectedPiece.getTile();
+				this.clearSelection();
+				this.movePiece(sourceTile, clickedTile);
+				return;
+			} else if (clickedTile.getType() == Tile.Type.CAPTURE && clickedPiece != null && this.selectedPiece.isEnemyPiece(clickedPiece)) {
+				Tile attackerTile = this.selectedPiece.getTile();
+				this.clearSelection();
+				this.capturePiece(attackerTile, clickedTile);
+				return;
 			}
+		}
+
+		this.clearSelection();
+		if (clickedPiece != null) {
+			clickedTile.select();
+			this.clickPiece(clickedPiece);
 		}
 	}
 
@@ -182,6 +209,21 @@ public class Chess {
 		this.selectedPiece = clickedPiece;
 		List<Position> validMoves = this.selectedPiece.getValidMoves(this.board);
 		this.board.highlightTiles(validMoves);
+	}
+
+	private void movePiece(Tile sourceTile, Tile targetTile) {
+		this.isAnimating = true;
+		this.animStage = 1;
+		this.animTimer = 0.0;
+		this.sourceTile = sourceTile;
+		this.targetTile = targetTile;
+		this.attackerPiece = sourceTile.getPiece();
+		this.targetPiece = null;
+
+		this.startX = this.attackerPiece.getCoordinate().getX();
+		this.startY = this.attackerPiece.getCoordinate().getY();
+		this.targetX = targetTile.getCoordinate().getX();
+		this.targetY = targetTile.getCoordinate().getY();
 	}
 
 	private void capturePiece(Tile sourceTile, Tile targetTile) {
